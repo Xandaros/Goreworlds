@@ -1,43 +1,26 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+/bam
+/.bam
+/config.lua
+/objs
+__pycache__/
+*.pyc
+*.pyo
+scripts/work/
+src/game/generated/
+other/icons/*.res
+/SDL.dll
+/freetype.dll
+/autoexec.cfg
 
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+/crapnet*
+/dilate*
+/fake_server*
+/map_resave*
+/map_version*
+/mastersrv*
+/packetgen*
+/teeworlds*
+/teeworlds_srv*
+/serverlaunch*
+/tileset_border*
+/versionsrv*
