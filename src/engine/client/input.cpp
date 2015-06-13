@@ -397,7 +397,7 @@ int CInput::Update()
 
 		}
 		
-		if (mouseLeft && g_Config.m_GoreRandomWeapons)
+		if (mouseLeft && g_Config.m_GoreRapidFire)
 		{
 			rapidCount++;
 			if (rapidCount > 1)
