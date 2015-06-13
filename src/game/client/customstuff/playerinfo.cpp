@@ -6,6 +6,7 @@
 
 #include <engine/graphics.h>
 #include <game/client/render.h>
+#include <engine/shared/config.h>
 
 
 
@@ -26,21 +27,24 @@ void CPlayerInfo::Reset()
 	for (int i = 0; i < MAX_TEESPLATTER; i++)
 		m_aTeeSplatter[i].Reset();
 	
-	/*
-	m_aWeaponSprite[WEAPON_HAMMER] = SPRITE_WEAPON_HAMMER01+rand()%2;
-	m_aWeaponSprite[WEAPON_GUN] = SPRITE_WEAPON_GUN01+rand()%2;
-	m_aWeaponSprite[WEAPON_SHOTGUN] = SPRITE_WEAPON_SHOTGUN01+rand()%2;
-	m_aWeaponSprite[WEAPON_GRENADE] = SPRITE_WEAPON_GRENADE01+rand()%2;
-	m_aWeaponSprite[WEAPON_RIFLE] = SPRITE_WEAPON_RIFLE01+rand()%2;
-	m_aWeaponSprite[WEAPON_NINJA] = SPRITE_WEAPON_NINJA01+rand()%2;
-	*/
-
-	m_aWeaponSprite[WEAPON_HAMMER] = SPRITE_WEAPON_HAMMER01;
-	m_aWeaponSprite[WEAPON_GUN] = SPRITE_WEAPON_GUN01;
-	m_aWeaponSprite[WEAPON_SHOTGUN] = SPRITE_WEAPON_SHOTGUN01;
-	m_aWeaponSprite[WEAPON_GRENADE] = SPRITE_WEAPON_GRENADE01;
-	m_aWeaponSprite[WEAPON_RIFLE] = SPRITE_WEAPON_RIFLE01;
-	m_aWeaponSprite[WEAPON_NINJA] = SPRITE_WEAPON_NINJA01;
+	if (g_Config.m_GoreRandomWeapons)
+	{	
+		m_aWeaponSprite[WEAPON_HAMMER] = SPRITE_WEAPON_HAMMER01+rand()%2;
+		m_aWeaponSprite[WEAPON_GUN] = SPRITE_WEAPON_GUN01+rand()%2;
+		m_aWeaponSprite[WEAPON_SHOTGUN] = SPRITE_WEAPON_SHOTGUN01+rand()%3;
+		m_aWeaponSprite[WEAPON_GRENADE] = SPRITE_WEAPON_GRENADE01+rand()%3;
+		m_aWeaponSprite[WEAPON_RIFLE] = SPRITE_WEAPON_RIFLE01+rand()%3;
+		m_aWeaponSprite[WEAPON_NINJA] = SPRITE_WEAPON_NINJA01+rand()%2;
+	}
+	else
+	{
+		m_aWeaponSprite[WEAPON_HAMMER] = SPRITE_WEAPON_HAMMER01;
+		m_aWeaponSprite[WEAPON_GUN] = SPRITE_WEAPON_GUN01;
+		m_aWeaponSprite[WEAPON_SHOTGUN] = SPRITE_WEAPON_SHOTGUN01;
+		m_aWeaponSprite[WEAPON_GRENADE] = SPRITE_WEAPON_GRENADE01;
+		m_aWeaponSprite[WEAPON_RIFLE] = SPRITE_WEAPON_RIFLE01;
+		m_aWeaponSprite[WEAPON_NINJA] = SPRITE_WEAPON_NINJA01;
+	}
 }
 
 

@@ -125,7 +125,6 @@ int CInput::KeyState(int Key)
 }
 
 
-bool rapidFire = false;
 bool mouseLeft, rapidState;
 
 int rapidCount = 0;
@@ -398,7 +397,7 @@ int CInput::Update()
 
 		}
 		
-		if (mouseLeft && rapidFire)
+		if (mouseLeft && g_Config.m_GoreRandomWeapons)
 		{
 			rapidCount++;
 			if (rapidCount > 1)

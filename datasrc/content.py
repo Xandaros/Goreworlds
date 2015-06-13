@@ -375,9 +375,9 @@ container.sprites.Add(Sprite("weapon_rifle_proj", set_game, 10,12,2,2))
 container.sprites.Add(Sprite("hook_chain", set_game, 2,0,1,1))
 container.sprites.Add(Sprite("hook_head", set_game, 3,0,2,1))
 
-container.sprites.Add(Sprite("weapon_ninja_muzzle1", set_game, 25,0,7,4))
-container.sprites.Add(Sprite("weapon_ninja_muzzle2", set_game, 25,4,7,4))
-container.sprites.Add(Sprite("weapon_ninja_muzzle3", set_game, 25,8,7,4))
+container.sprites.Add(Sprite("weapon_ninja_muzzle1", set_weapons, 25,0,7,4))
+container.sprites.Add(Sprite("weapon_ninja_muzzle2", set_weapons, 25,4,7,4))
+container.sprites.Add(Sprite("weapon_ninja_muzzle3", set_weapons, 25,8,7,4))
 
 container.sprites.Add(Sprite("pickup_health", set_game, 10,2,2,2))
 container.sprites.Add(Sprite("pickup_armor", set_game, 12,2,2,2))
@@ -396,15 +396,18 @@ container.sprites.Add(Sprite("weapon_gun02", set_weapons, 4,3,4,2))
 
 container.sprites.Add(Sprite("weapon_shotgun01", set_weapons, 0,5,8,2))
 container.sprites.Add(Sprite("weapon_shotgun02", set_weapons, 8,5,8,2))
+container.sprites.Add(Sprite("weapon_shotgun03", set_weapons, 16,5,8,2))
 
 container.sprites.Add(Sprite("weapon_grenade01", set_weapons, 0,7,7,2))
 container.sprites.Add(Sprite("weapon_grenade02", set_weapons, 7,7,7,2))
+container.sprites.Add(Sprite("weapon_grenade03", set_weapons, 14,7,7,2))
 
 container.sprites.Add(Sprite("weapon_ninja01", set_game, 0,9,8,2))
 container.sprites.Add(Sprite("weapon_ninja02", set_game, 8,9,8,2))
 
 container.sprites.Add(Sprite("weapon_rifle01", set_weapons, 0,11,7,3))
 container.sprites.Add(Sprite("weapon_rifle02", set_weapons, 7,11,7,3))
+container.sprites.Add(Sprite("weapon_rifle03", set_weapons, 14,11,7,3))
 
 
 

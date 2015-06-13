@@ -856,6 +856,54 @@ void CMenus::RenderSettingsSound(CUIRect MainView)
 	}
 }
 
+
+
+
+// custom menu for the client
+void CMenus::RenderSettingsCustom(CUIRect MainView)
+{
+	CUIRect Button;
+	MainView.VSplitMid(&MainView, 0);
+	
+	// blood slider
+	{
+		CUIRect Button, Label;
+		MainView.HSplitTop(5.0f, &Button, &MainView);
+		MainView.HSplitTop(20.0f, &Button, &MainView);
+		Button.VSplitLeft(190.0f, &Label, &Button);
+		Button.HMargin(2.0f, &Button);
+		UI()->DoLabelScaled(&Label, "Blood amount", 14.0f, -1);
+		g_Config.m_GoreBlood = (int)(DoScrollbarH(&g_Config.m_GoreBlood, &Button, g_Config.m_GoreBlood/100.0f)*100.0f);
+		MainView.HSplitTop(20.0f, 0, &MainView);
+	}
+
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreWallSplatter, Localize("Enable wall splatter"), g_Config.m_GoreWallSplatter, &Button))
+		g_Config.m_GoreWallSplatter ^= 1;
+
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreTeeSplatter, Localize("Enable tee splatter"), g_Config.m_GoreTeeSplatter, &Button))
+		g_Config.m_GoreTeeSplatter ^= 1;
+
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreAimLine, Localize("Enable aim line"), g_Config.m_GoreAimLine, &Button))
+		g_Config.m_GoreAimLine ^= 1;
+
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreRapidFire, Localize("Enable rapid fire"), g_Config.m_GoreRapidFire, &Button))
+		g_Config.m_GoreRapidFire ^= 1;
+
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreRandomWeapons, Localize("Enable random weapons"), g_Config.m_GoreRandomWeapons, &Button))
+		g_Config.m_GoreRandomWeapons ^= 1;
+}
+
+
+
+
+
+
+
 class CLanguage
 {
 public:
@@ -1001,7 +1049,8 @@ void CMenus::RenderSettings(CUIRect MainView)
 		("Tee"),
 		Localize("Controls"),
 		Localize("Graphics"),
-		Localize("Sound")};
+		Localize("Sound"),
+		"Custom"};
 
 	int NumTabs = (int)(sizeof(aTabs)/sizeof(*aTabs));
 
@@ -1029,6 +1078,8 @@ void CMenus::RenderSettings(CUIRect MainView)
 		RenderSettingsGraphics(MainView);
 	else if(s_SettingsPage == 6)
 		RenderSettingsSound(MainView);
+	else if(s_SettingsPage == 7)
+		RenderSettingsCustom(MainView);
 
 	if(m_NeedRestartGraphics || m_NeedRestartSound)
 		UI()->DoLabel(&RestartWarning, Localize("You must restart the game for all settings to take effect."), 15.0f, -1);

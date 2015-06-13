@@ -629,40 +629,61 @@ void CGameClient::ProcessEvents()
 			CNetEvent_DamageInd *ev = (CNetEvent_DamageInd *)pData;
 			//g_GameClient.m_pEffects->DamageIndicator(vec2(ev->m_X, ev->m_Y), GetDirection(ev->m_Angle));
 			
-			for (int i = 0; i < 30; i++)
+			// 0 - 200
+			int BloodAmount = g_Config.m_GoreBlood*2;
+			
+			for (int i = 0; i < BloodAmount; i++)
 				g_GameClient.m_pEffects->Blood(vec2(ev->m_X, ev->m_Y), RandomDir());
 			
 			
-			for (int c = 0; c < MAX_CLIENTS; c++)
+			if (g_Config.m_GoreTeeSplatter)
 			{
-				if (CustomStuff()->m_aPlayerInfo[c].m_InUse)
+				int TeeSplatter = 0;
+				if (BloodAmount > 0)
+					TeeSplatter = 1 + BloodAmount/60;
+				
+				for (int i = 0; i < TeeSplatter; i++)
 				{
-					if (abs(CustomStuff()->m_aPlayerInfo[c].Pos().x - ev->m_X) < 250 && abs(CustomStuff()->m_aPlayerInfo[c].Pos().y - ev->m_Y) < 250)
-						CustomStuff()->m_aPlayerInfo[c].AddTeeSplatter(atan2(CustomStuff()->m_aPlayerInfo[c].Pos().x - ev->m_X, CustomStuff()->m_aPlayerInfo[c].Pos().y - ev->m_Y));						
+					for (int c = 0; c < MAX_CLIENTS; c++)
+					{
+						if (CustomStuff()->m_aPlayerInfo[c].m_InUse)
+						{
+							if (abs(CustomStuff()->m_aPlayerInfo[c].Pos().x - ev->m_X) < 250 && abs(CustomStuff()->m_aPlayerInfo[c].Pos().y - ev->m_Y) < 250)
+								CustomStuff()->m_aPlayerInfo[c].AddTeeSplatter(atan2(CustomStuff()->m_aPlayerInfo[c].Pos().x - ev->m_X, CustomStuff()->m_aPlayerInfo[c].Pos().y - ev->m_Y));						
+						}
+					}
 				}
 			}
-			
-			for (int i = 0; i < 2; i++)
-			{
-				vec2 p = vec2(ev->m_X, ev->m_Y);
-				vec2 v =  RandomDir()*(10.0f+frandom()*8.0f);
-				float a = GetAngle(v);
 				
-				for (int l = 0; l < 12; l++)
+			if (g_Config.m_GoreWallSplatter)
+			{
+				int WallSplatter = 0;
+				if (BloodAmount > 0)
+					WallSplatter = 1 + BloodAmount/50;
+				
+				
+				for (int i = 0; i < WallSplatter; i++)
 				{
-					p += v;
-					if (Collision()->GetCollisionAt(p.x, p.y)&CCollision::COLFLAG_SOLID)
-					{
-						p += v*2;
-						
-						if (!Collision()->GetCollisionAt(p.x-14, p.y-14)&CCollision::COLFLAG_SOLID ||
-							!Collision()->GetCollisionAt(p.x+14, p.y-14)&CCollision::COLFLAG_SOLID ||
-							!Collision()->GetCollisionAt(p.x+14, p.y+14)&CCollision::COLFLAG_SOLID ||
-							!Collision()->GetCollisionAt(p.x-14, p.y+14)&CCollision::COLFLAG_SOLID)
-							break;
+					vec2 p = vec2(ev->m_X, ev->m_Y);
+					vec2 v =  RandomDir()*(10.0f+frandom()*8.0f);
+					float a = GetAngle(v);
 					
-						g_GameClient.m_pEffects->Splatter(p, a);
-						break;
+					for (int l = 0; l < 12; l++)
+					{
+						p += v;
+						if (Collision()->GetCollisionAt(p.x, p.y)&CCollision::COLFLAG_SOLID)
+						{
+							p += v*2;
+							
+							if (!Collision()->GetCollisionAt(p.x-14, p.y-14)&CCollision::COLFLAG_SOLID ||
+								!Collision()->GetCollisionAt(p.x+14, p.y-14)&CCollision::COLFLAG_SOLID ||
+								!Collision()->GetCollisionAt(p.x+14, p.y+14)&CCollision::COLFLAG_SOLID ||
+								!Collision()->GetCollisionAt(p.x-14, p.y+14)&CCollision::COLFLAG_SOLID)
+								break;
+						
+							g_GameClient.m_pEffects->Splatter(p, a);
+							break;
+						}
 					}
 				}
 			}
