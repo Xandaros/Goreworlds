@@ -33,7 +33,7 @@ void CPlayerInfo::Reset()
 		m_aWeaponSprite[WEAPON_GUN] = SPRITE_WEAPON_GUN01+rand()%2;
 		m_aWeaponSprite[WEAPON_SHOTGUN] = SPRITE_WEAPON_SHOTGUN01+rand()%3;
 		m_aWeaponSprite[WEAPON_GRENADE] = SPRITE_WEAPON_GRENADE01+rand()%3;
-		m_aWeaponSprite[WEAPON_RIFLE] = SPRITE_WEAPON_RIFLE01+rand()%3;
+		m_aWeaponSprite[WEAPON_RIFLE] = SPRITE_WEAPON_RIFLE01+rand()%4;
 		m_aWeaponSprite[WEAPON_NINJA] = SPRITE_WEAPON_NINJA01+rand()%2;
 	}
 	else

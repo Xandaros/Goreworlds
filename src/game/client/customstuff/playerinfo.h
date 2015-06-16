@@ -60,6 +60,13 @@ public:
 	
 	int GetWeaponSprite(int Weapon){ return m_aWeaponSprite[Weapon]; }
 	
+	
+	void SetWeaponSprite(int Weapon, int Sprite)
+	{
+		m_aWeaponSprite[Weapon] = Sprite;
+	}
+	
+	
 	void AddTeeSplatter(float Angle);
 	
 	void RenderTeeSplatter(class IGraphics *Graphics, class CRenderTools *RenderTools);

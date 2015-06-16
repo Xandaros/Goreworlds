@@ -408,6 +408,7 @@ container.sprites.Add(Sprite("weapon_ninja02", set_game, 8,9,8,2))
 container.sprites.Add(Sprite("weapon_rifle01", set_weapons, 0,11,7,3))
 container.sprites.Add(Sprite("weapon_rifle02", set_weapons, 7,11,7,3))
 container.sprites.Add(Sprite("weapon_rifle03", set_weapons, 14,11,7,3))
+container.sprites.Add(Sprite("weapon_rifle04", set_weapons, 21,12,7,3))
 
 
 

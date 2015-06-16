@@ -896,6 +896,10 @@ void CMenus::RenderSettingsCustom(CUIRect MainView)
 	MainView.HSplitTop(20.0f, &Button, &MainView);
 	if(DoButton_CheckBox(&g_Config.m_GoreRandomWeapons, Localize("Enable random weapon skins"), g_Config.m_GoreRandomWeapons, &Button))
 		g_Config.m_GoreRandomWeapons ^= 1;
+	
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreDmgInd, Localize("Enable vanilla damage indicators"), g_Config.m_GoreDmgInd, &Button))
+		g_Config.m_GoreDmgInd ^= 1;
 }
 
 

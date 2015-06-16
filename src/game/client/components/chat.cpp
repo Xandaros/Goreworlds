@@ -16,7 +16,46 @@
 #include <game/client/components/sounds.h>
 #include <game/localization.h>
 
+#include <game/upgradelist.h>
+
+#include <game/client/customstuff.h>
+#include <game/client/customstuff/playerinfo.h>
+
+#include <game/generated/client_data.h>
+
 #include "chat.h"
+
+
+const int WeaponSprite[NUM_CUSTOMWEAPONS] =
+{
+	SPRITE_WEAPON_NINJA01, // SWORD_KATANA,
+	SPRITE_WEAPON_NINJA02, // SWORD_PIKATANA,
+	SPRITE_WEAPON_HAMMER01, // HAMMER_BOTBASIC,
+	SPRITE_WEAPON_HAMMER01, // HAMMER_BOTFLYHAMMER,
+	SPRITE_WEAPON_HAMMER01, // HAMMER_BOTSUPERFLYHAMMER,
+	SPRITE_WEAPON_HAMMER01, // HAMMER_BASIC,
+	SPRITE_WEAPON_HAMMER02, // HAMMER_SANDMAN,
+	SPRITE_WEAPON_HAMMER02, // HAMMER_MJOLNIR,
+	SPRITE_WEAPON_SHOTGUN01, // SHOTGUN_BOTSHOTGUN,
+	SPRITE_WEAPON_SHOTGUN01, // SHOTGUN_DOUBLEBARREL,
+	SPRITE_WEAPON_SHOTGUN02, // SHOTGUN_COMBAT,
+	SPRITE_WEAPON_SHOTGUN03, // SHOTGUN_LIGHTNING,
+	SPRITE_WEAPON_GUN01, // GUN_BOTPISTOL,
+	SPRITE_WEAPON_GUN01, // GUN_PISTOL,
+	SPRITE_WEAPON_GUN02, // GUN_MAGNUM,
+	SPRITE_WEAPON_GUN02, // GUN_SLEEPRAY,
+	SPRITE_WEAPON_RIFLE03, // RIFLE_ASSAULTRIFLE,
+	SPRITE_WEAPON_RIFLE04, // RIFLE_HEAVYRIFLE,
+	SPRITE_WEAPON_RIFLE01, // RIFLE_LASERRIFLE,
+	SPRITE_WEAPON_RIFLE02, // RIFLE_LIGHTNINGRIFLE,
+	SPRITE_WEAPON_RIFLE01, // RIFLE_BOTLIGHTNING,
+	SPRITE_WEAPON_RIFLE01, // RIFLE_BOTLASER,
+	SPRITE_WEAPON_GRENADE01, // GRENADE_GRENADELAUNCHER,
+	SPRITE_WEAPON_GRENADE02, // GRENADE_HEAVYLAUNCHER,
+	SPRITE_WEAPON_GRENADE03, // GRENADE_DOOMLAUNCHER,
+	SPRITE_WEAPON_GRENADE01, // GRENADE_GRENADE
+};
+
 
 
 CChat::CChat()
@@ -271,6 +310,20 @@ void CChat::OnMessage(int MsgType, void *pRawMsg)
 	if(MsgType == NETMSGTYPE_SV_CHAT)
 	{
 		CNetMsg_Sv_Chat *pMsg = (CNetMsg_Sv_Chat *)pRawMsg;
+		
+		// change weapon skin based on chat messages (for Killing Floor mod)
+		for (int i = 0; i < NUM_CUSTOMWEAPONS; i++)
+		{
+			char aBuf[128];
+			str_format(aBuf, sizeof(aBuf), "Using: %s", aCustomWeapon[i].m_Name);
+
+			if ( strcmp(pMsg->m_pMessage, aBuf) == 0)
+			{
+				m_pClient->CustomStuff()->m_aPlayerInfo[m_pClient->m_Snap.m_LocalClientID].SetWeaponSprite(aCustomWeapon[i].m_ParentWeapon, WeaponSprite[i]);
+				break;
+			}
+		}
+		
 		AddLine(pMsg->m_ClientID, pMsg->m_Team, pMsg->m_pMessage);
 	}
 }
