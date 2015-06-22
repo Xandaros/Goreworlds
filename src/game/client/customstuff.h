@@ -19,8 +19,14 @@ private:
 	
 	int64 m_LastUpdate;
 	
+	vec2 m_CameraTargetCenter;
+	vec2 m_CameraCenter;
+	
 public:
 	int LocalTick(){ return m_Tick; }
+	
+	void SetCameraTarget(vec2 Center){ m_CameraTargetCenter = Center; }
+	vec2 GetCameraCenter(){ return m_CameraCenter; }
 	
 	CCustomStuff();
 	

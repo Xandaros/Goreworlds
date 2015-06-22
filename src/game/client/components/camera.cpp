@@ -7,6 +7,8 @@
 #include <game/client/gameclient.h>
 #include <game/client/component.h>
 
+#include <game/client/customstuff.h>
+
 #include "camera.h"
 #include "controls.h"
 
@@ -14,6 +16,7 @@ CCamera::CCamera()
 {
 	m_CamType = CAMTYPE_UNDEFINED;
 }
+
 
 void CCamera::OnRender()
 {
@@ -54,7 +57,30 @@ void CCamera::OnRender()
 		if(m_pClient->m_Snap.m_SpecInfo.m_Active)
 			m_Center = m_pClient->m_Snap.m_SpecInfo.m_Position + CameraOffset;
 		else
-			m_Center = m_pClient->m_LocalCharacterPos + CameraOffset;
+		{
+			m_Center2 = m_pClient->m_LocalCharacterPos + CameraOffset;
+			
+			int64 currentTime = time_get();
+			if ((currentTime-m_LastUpdate > time_freq()) || (m_LastUpdate == 0))
+				m_LastUpdate = currentTime;
+				
+			int step = time_freq()/600;
+			
+			if (g_Config.m_GoreCameraDelay > 1)
+			{
+				for (;m_LastUpdate < currentTime; m_LastUpdate += step)
+				{
+					m_Center.x += (m_Center2.x-m_Center.x) / float(g_Config.m_GoreCameraDelay);
+					m_Center.y += (m_Center2.y-m_Center.y) / float(g_Config.m_GoreCameraDelay);
+				}
+			}
+			else
+			{
+				m_Center = m_Center2;
+			}
+			
+			
+		}
 	}
 
 	m_PrevCenter = m_Center;

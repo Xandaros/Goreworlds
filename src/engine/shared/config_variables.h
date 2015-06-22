@@ -67,6 +67,7 @@ MACRO_CONFIG_INT(GoreRapidFire, gore_rapidfire, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CL
 MACRO_CONFIG_INT(GoreRandomWeapons, gore_randomweapons, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Random weapons enable")
 MACRO_CONFIG_INT(GoreDmgInd, gore_dmgind, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Vanilla damage indicators")
 
+MACRO_CONFIG_INT(GoreCameraDelay, gore_cameradelay, 8, 1, 24, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Camera delay")
 
 
 

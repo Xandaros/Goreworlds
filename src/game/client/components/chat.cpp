@@ -319,7 +319,12 @@ void CChat::OnMessage(int MsgType, void *pRawMsg)
 
 			if ( strcmp(pMsg->m_pMessage, aBuf) == 0)
 			{
-				m_pClient->CustomStuff()->m_aPlayerInfo[m_pClient->m_Snap.m_LocalClientID].SetWeaponSprite(aCustomWeapon[i].m_ParentWeapon, WeaponSprite[i]);
+				int w = aCustomWeapon[i].m_ParentWeapon;
+				
+				if (aCustomWeapon[i].m_ProjectileType == PROJTYPE_SWORD)
+					w = WEAPON_NINJA;
+				
+				m_pClient->CustomStuff()->m_aPlayerInfo[m_pClient->m_Snap.m_LocalClientID].SetWeaponSprite(w, WeaponSprite[i]);
 				break;
 			}
 		}

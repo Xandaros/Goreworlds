@@ -332,8 +332,9 @@ void CPlayers::RenderPlayer(
 	
 
 	// draw aim line 
-	if(pPlayerInfo->m_Local && g_Config.m_GoreAimLine)
+	if (pPlayerInfo->m_Local && g_Config.m_GoreAimLine)
 	{
+		//vec2 Pos = Position + Direction * 400; //Position + Direction * 500.0f;
 		vec2 Pos = Position + m_pClient->m_pControls->m_MousePos; //Position + Direction * 500.0f;
 		vec2 From = Position;
 		vec2 Dir = Direction;

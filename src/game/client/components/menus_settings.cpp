@@ -900,6 +900,19 @@ void CMenus::RenderSettingsCustom(CUIRect MainView)
 	MainView.HSplitTop(20.0f, &Button, &MainView);
 	if(DoButton_CheckBox(&g_Config.m_GoreDmgInd, Localize("Enable vanilla damage indicators"), g_Config.m_GoreDmgInd, &Button))
 		g_Config.m_GoreDmgInd ^= 1;
+	
+	// camera slider
+	{
+		CUIRect Button, Label;
+		MainView.HSplitTop(5.0f, &Button, &MainView);
+		MainView.HSplitTop(20.0f, &Button, &MainView);
+		Button.VSplitLeft(190.0f, &Label, &Button);
+		Button.HMargin(2.0f, &Button);
+		UI()->DoLabelScaled(&Label, "Camera drag", 14.0f, -1);
+		g_Config.m_GoreCameraDelay = (int)(DoScrollbarH(&g_Config.m_GoreCameraDelay, &Button, g_Config.m_GoreCameraDelay/24.0f)*24.0f);
+		//g_Config.m_GoreCameraDelay = (int)(DoScrollbarH(&g_Config.m_GoreCameraDelay, &Button, g_Config.m_GoreCameraDelay));
+		MainView.HSplitTop(20.0f, 0, &MainView);
+	}
 }
 
 
