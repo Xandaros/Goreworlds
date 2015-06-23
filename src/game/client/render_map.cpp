@@ -3,6 +3,7 @@
 #include <math.h>
 #include <base/math.h>
 #include <engine/graphics.h>
+#include <engine/shared/config.h>
 
 #include "render.h"
 
@@ -98,6 +99,10 @@ void CRenderTools::RenderQuads(CQuad *pQuads, int NumQuads, int RenderFlags, ENV
 			a = aChannels[3];
 		}
 
+		r *= g_Config.m_GoreBackgroundBrightness / 100.0f;
+		g *= g_Config.m_GoreBackgroundBrightness / 100.0f;
+		b *= g_Config.m_GoreBackgroundBrightness / 100.0f;
+		
 		bool Opaque = false;
 		/* TODO: Analyze quadtexture
 		if(a < 0.01f || (q->m_aColors[0].a < 0.01f && q->m_aColors[1].a < 0.01f && q->m_aColors[2].a < 0.01f && q->m_aColors[3].a < 0.01f))
@@ -177,6 +182,7 @@ void CRenderTools::RenderTilemap(CTile *pTiles, int w, int h, float Scale, vec4 
 	float FinalTilesetScale = FinalTileSize/TilePixelSize;
 
 	float r=1, g=1, b=1, a=1;
+	
 	if(ColorEnv >= 0)
 	{
 		float aChannels[4];
@@ -186,6 +192,10 @@ void CRenderTools::RenderTilemap(CTile *pTiles, int w, int h, float Scale, vec4 
 		b = aChannels[2];
 		a = aChannels[3];
 	}
+	
+	r *= g_Config.m_GoreTileBrightness / 100.0f;
+	g *= g_Config.m_GoreTileBrightness / 100.0f;
+	b *= g_Config.m_GoreTileBrightness / 100.0f;
 
 	Graphics()->QuadsBegin();
 	Graphics()->SetColor(Color.r*r, Color.g*g, Color.b*b, Color.a*a);

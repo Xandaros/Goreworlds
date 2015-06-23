@@ -45,6 +45,16 @@ void CPlayerInfo::Reset()
 		m_aWeaponSprite[WEAPON_RIFLE] = SPRITE_WEAPON_RIFLE01;
 		m_aWeaponSprite[WEAPON_NINJA] = SPRITE_WEAPON_NINJA01;
 	}
+	
+	// reset bounciness
+	m_FeetOffset = vec2(0, 0);
+	m_FeetOffsetVel = vec2(0, 0);
+	
+	m_WeaponRecoil = vec2(0, 0);
+	m_WeaponRecoilVel = vec2(0, 0);
+	
+	m_Weapon2Recoil = vec2(0, 0);
+	m_Weapon2RecoilVel = vec2(0, 0);
 }
 
 
@@ -107,6 +117,66 @@ void CPlayerInfo::RenderTeeSplatter(IGraphics *Graphics, CRenderTools *RenderToo
 
 
 
+void CPlayerInfo::PhysicsTick(vec2 PlayerVel, vec2 PrevVel)
+{
+	if (!g_Config.m_GoreBouncyTee)
+	{
+		m_FeetOffsetVel = vec2(0, 0);
+		m_FeetOffset = vec2(0, 0);
+		return;
+	}
+	
+	//float b = 1.5f - g_Config.m_GoreTeeBounciness / 100.0f;
+	
+	// feet
+	m_FeetOffsetVel.x -= ((PlayerVel.x-PrevVel.x)/800.0f);
+	m_FeetOffsetVel.x -= (m_FeetOffset.x / 16.0f);
+	m_FeetOffsetVel.x -= m_FeetOffsetVel.x*0.15f;
+
+	if (PlayerVel.y == 0) //m_Jumped
+		m_FeetOffsetVel.x -= m_FeetOffsetVel.x*0.15f;
+
+	if (PlayerVel.y < 0)
+		m_FeetOffsetVel.y -= (PlayerVel.y/1400.0f);
+
+	m_FeetOffsetVel.y -= (m_FeetOffset.y / 4.0f);
+	m_FeetOffsetVel.y -= m_FeetOffsetVel.y*0.15f;
+
+	m_FeetOffset += m_FeetOffsetVel;
+	
+	
+	// weapon recoil
+ 	m_WeaponRecoilVel.x -= m_WeaponRecoil.x / 6.0f;
+	m_WeaponRecoilVel.y -= m_WeaponRecoil.y / 6.0f;
+	m_WeaponRecoilVel *= 0.82f;
+			
+	m_WeaponRecoil += m_WeaponRecoilVel;
+	
+	m_Weapon2RecoilVel.x += (PlayerVel.x-PrevVel.x)/2000.0f;
+	m_Weapon2RecoilVel.y += (PlayerVel.y-PrevVel.y)/2000.0f;
+		
+	m_Weapon2RecoilVel.x -= m_Weapon2Recoil.x / 12.0f;
+	m_Weapon2RecoilVel.y -= m_Weapon2Recoil.y / 12.0f;
+		
+	m_Weapon2RecoilVel *= 0.8f;
+
+	m_Weapon2Recoil += m_Weapon2RecoilVel;
+}
+	
+	
+void CPlayerInfo::UpdatePhysics(vec2 PlayerVel, vec2 PrevVel)
+{
+	int64 currentTime = time_get();
+	if ((currentTime-m_LastUpdate > time_freq()) || (m_LastUpdate == 0))
+		m_LastUpdate = currentTime;
+		
+	int step = time_freq()/60;
+	
+	for (;m_LastUpdate < currentTime; m_LastUpdate += step)
+		PhysicsTick(PlayerVel, PrevVel);
+	
+}
+	
 void CPlayerInfo::Tick()
 {
 	for (int i = 0; i < MAX_TEESPLATTER; i++)

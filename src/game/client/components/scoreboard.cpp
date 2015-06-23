@@ -5,6 +5,8 @@
 #include <engine/textrender.h>
 #include <engine/shared/config.h>
 
+#include <cstring>
+
 #include <game/generated/client_data.h>
 #include <game/generated/protocol.h>
 
@@ -14,6 +16,8 @@
 #include <game/client/render.h>
 #include <game/client/components/countryflags.h>
 #include <game/client/components/motd.h>
+
+#include <game/client/customstuff.h>
 
 #include "scoreboard.h"
 
@@ -215,6 +219,7 @@ void CScoreboard::RenderScoreboard(float x, float y, float w, int Team, const ch
 	float FontSize = 24.0f;
 	CTextCursor Cursor;
 
+	
 	for(int i = 0; i < MAX_CLIENTS; i++)
 	{
 		// make sure that we render the correct team
@@ -222,6 +227,13 @@ void CScoreboard::RenderScoreboard(float x, float y, float w, int Team, const ch
 		if(!pInfo || pInfo->m_Team != Team)
 			continue;
 
+		// do not show bots in KF
+		if (m_pClient->CustomStuff()->m_KF)
+		{
+			if ( strcmp(m_pClient->m_aClients[pInfo->m_ClientID].m_aName, "") == 0)
+				continue;
+		}
+		
 		// background so it's easy to find the local player or the followed one in spectator mode
 		if(pInfo->m_Local || (m_pClient->m_Snap.m_SpecInfo.m_Active && pInfo->m_ClientID == m_pClient->m_Snap.m_SpecInfo.m_SpectatorID))
 		{

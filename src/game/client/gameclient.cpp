@@ -593,7 +593,10 @@ void CGameClient::OnStateChange(int NewState, int OldState)
 }
 
 void CGameClient::OnShutdown() {}
-void CGameClient::OnEnterGame() {}
+void CGameClient::OnEnterGame()
+{
+	CustomStuff()->Reset();
+}
 
 void CGameClient::OnGameOver()
 {

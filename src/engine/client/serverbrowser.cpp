@@ -154,6 +154,7 @@ void CServerBrowser::Filter()
 		else if(g_Config.m_BrFilterPure &&
 			(str_comp(m_ppServerlist[i]->m_Info.m_aGameType, "DM") != 0 &&
 			str_comp(m_ppServerlist[i]->m_Info.m_aGameType, "TDM") != 0 &&
+			str_comp(m_ppServerlist[i]->m_Info.m_aGameType, "KF") != 0 &&
 			str_comp(m_ppServerlist[i]->m_Info.m_aGameType, "CTF") != 0))
 		{
 			Filtered = 1;
@@ -165,6 +166,10 @@ void CServerBrowser::Filter()
 			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "dm7") == 0 ||
 			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "dm8") == 0 ||
 			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "dm9") == 0 ||
+			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "kf_warehouse1") == 0 ||
+			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "kf_warehouse2") == 0 ||
+			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "kf_warehouse3") == 0 ||
+			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "kf_warehouse4") == 0 ||
 			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "ctf1") == 0 ||
 			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "ctf2") == 0 ||
 			str_comp(m_ppServerlist[i]->m_Info.m_aMap, "ctf3") == 0 ||

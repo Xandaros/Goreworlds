@@ -271,6 +271,8 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 	vec2 Direction = Dir;
 	vec2 Position = Pos;
 
+	vec2 FeetOffset = PlayerInfo->m_FeetOffset;
+	
 	//float HeadTilt = HeadTilt = Direction.y * (Direction.x < 0 ? -1 : 1) / 8.0f;
 	
 	//Graphics()->TextureSet(data->images[IMAGE_CHAR_DEFAULT].id);
@@ -363,7 +365,7 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 			}
 
 			Graphics()->SetColor(pInfo->m_ColorFeet.r*cs, pInfo->m_ColorFeet.g*cs, pInfo->m_ColorFeet.b*cs, pInfo->m_ColorFeet.a);
-			IGraphics::CQuadItem QuadItem(Position.x+pFoot->m_X*AnimScale, Position.y+pFoot->m_Y*AnimScale, w, h);
+			IGraphics::CQuadItem QuadItem(Position.x+pFoot->m_X*AnimScale+FeetOffset.x, Position.y+pFoot->m_Y*AnimScale+FeetOffset.y, w, h);
 			Graphics()->QuadsDraw(&QuadItem, 1);
 		}
 	}

@@ -490,9 +490,38 @@ void CPlayers::RenderPlayer(
 				s_LastIntraTick = IntraTick;
 
 			float a = (Client()->GameTick()-Player.m_AttackTick+s_LastIntraTick)/5.0f;
+			
 			if(a < 1)
+			{
 				Recoil = sinf(a*pi);
-			p = Position + Dir * g_pData->m_Weapons.m_aId[iw].m_Offsetx - Dir*Recoil*10.0f;
+
+				if (CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_WeaponRecoilLoaded)
+				{
+					CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_WeaponRecoilLoaded = false;
+					if (Player.m_Weapon == WEAPON_GUN)
+						CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_WeaponRecoilVel -= Direction * 10.0f;
+					else
+						CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_WeaponRecoilVel -= Direction * 14.0f;
+						
+					/*
+					if (Player.m_Weapon == WEAPON_GUN || Player.m_Weapon == WEAPON_SHOTGUN)
+					{
+						CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_WeaponFlashAlpha = 1.0f;
+						CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_WeaponFlashNum = rand() % g_pData->m_Weapons.m_aId[iw].m_NumSpriteMuzzles;
+					}
+					*/
+				}
+			}
+			else
+			{
+				CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_WeaponRecoilLoaded = true;
+			}
+			
+			if (!g_Config.m_GoreBouncyTee)
+				p = Position + Dir * g_pData->m_Weapons.m_aId[iw].m_Offsetx - Dir*Recoil*10.0f;
+			else
+				p = Position + Dir * g_pData->m_Weapons.m_aId[iw].m_Offsetx + CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_WeaponRecoil + CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_Weapon2Recoil;
+			
 			p.y += g_pData->m_Weapons.m_aId[iw].m_Offsety;
 			RenderTools()->DrawSprite(p.x, p.y, g_pData->m_Weapons.m_aId[iw].m_VisualSize);
 		}
@@ -574,6 +603,7 @@ void CPlayers::RenderPlayer(
 	
 	// custom stuff
 	CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].Update(Position);
+	CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].UpdatePhysics(vec2(Player.m_VelX, Player.m_VelY), vec2(Prev.m_VelX, Prev.m_VelY));
 	
 	//RenderTools()->RenderTee(&State, &RenderInfo, Player.m_Emote, Direction, Position);
 	RenderTools()->RenderTee(&CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID], &State, &RenderInfo, Player.m_Emote, Direction, Position);

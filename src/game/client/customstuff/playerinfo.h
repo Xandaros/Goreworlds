@@ -48,24 +48,34 @@ private:
 	
 	int m_aWeaponSprite[NUM_WEAPONS];
 	
+	int64 m_LastUpdate;
+	
 public:
 	CPlayerInfo();
 	
 	void Reset();
+	
+	// called from CCustomStuff
 	void Tick();
+	
+	// called from CPlayers
+	void UpdatePhysics(vec2 PlayerVel, vec2 PrevVel);
+	void PhysicsTick(vec2 PlayerVel, vec2 PrevVel);
 	
 	void Update(vec2 Pos);
 	
 	vec2 Pos(){ return m_Pos; }
 	
+	vec2 m_FeetOffset;
+	vec2 m_FeetOffsetVel;
+	
+	vec2 m_WeaponRecoil, m_WeaponRecoilVel;
+	vec2 m_Weapon2Recoil, m_Weapon2RecoilVel;
+	
+	bool m_WeaponRecoilLoaded;
+
+	void SetWeaponSprite(int Weapon, int Sprite){ m_aWeaponSprite[Weapon] = Sprite; }
 	int GetWeaponSprite(int Weapon){ return m_aWeaponSprite[Weapon]; }
-	
-	
-	void SetWeaponSprite(int Weapon, int Sprite)
-	{
-		m_aWeaponSprite[Weapon] = Sprite;
-	}
-	
 	
 	void AddTeeSplatter(float Angle);
 	

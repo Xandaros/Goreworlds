@@ -901,6 +901,25 @@ void CMenus::RenderSettingsCustom(CUIRect MainView)
 	if(DoButton_CheckBox(&g_Config.m_GoreDmgInd, Localize("Enable vanilla damage indicators"), g_Config.m_GoreDmgInd, &Button))
 		g_Config.m_GoreDmgInd ^= 1;
 	
+	
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreBouncyTee, Localize("Bouncy tee"), g_Config.m_GoreBouncyTee, &Button))
+		g_Config.m_GoreBouncyTee ^= 1;
+	
+	// tee bounciness slider
+	/*
+	{
+		CUIRect Button, Label;
+		MainView.HSplitTop(5.0f, &Button, &MainView);
+		MainView.HSplitTop(20.0f, &Button, &MainView);
+		Button.VSplitLeft(190.0f, &Label, &Button);
+		Button.HMargin(2.0f, &Button);
+		UI()->DoLabelScaled(&Label, "Tee bounciness", 14.0f, -1);
+		g_Config.m_GoreTeeBounciness = (int)(DoScrollbarH(&g_Config.m_GoreTeeBounciness, &Button, g_Config.m_GoreTeeBounciness/100.0f)*100.0f);
+		MainView.HSplitTop(20.0f, 0, &MainView);
+	}
+	*/
+	
 	// camera slider
 	{
 		CUIRect Button, Label;
@@ -910,7 +929,32 @@ void CMenus::RenderSettingsCustom(CUIRect MainView)
 		Button.HMargin(2.0f, &Button);
 		UI()->DoLabelScaled(&Label, "Camera drag", 14.0f, -1);
 		g_Config.m_GoreCameraDelay = (int)(DoScrollbarH(&g_Config.m_GoreCameraDelay, &Button, g_Config.m_GoreCameraDelay/24.0f)*24.0f);
-		//g_Config.m_GoreCameraDelay = (int)(DoScrollbarH(&g_Config.m_GoreCameraDelay, &Button, g_Config.m_GoreCameraDelay));
+		MainView.HSplitTop(20.0f, 0, &MainView);
+	}
+	
+	// tile brightness slider
+	{
+		CUIRect Button, Label;
+		MainView.HSplitTop(5.0f, &Button, &MainView);
+		MainView.HSplitTop(20.0f, &Button, &MainView);
+		Button.VSplitLeft(190.0f, &Label, &Button);
+		Button.HMargin(2.0f, &Button);
+		UI()->DoLabelScaled(&Label, "Tile brightness", 14.0f, -1);
+		g_Config.m_GoreTileBrightness = (int)(DoScrollbarH(&g_Config.m_GoreTileBrightness, &Button, g_Config.m_GoreTileBrightness/100.0f)*100.0f);
+
+		MainView.HSplitTop(20.0f, 0, &MainView);
+	}
+	
+	// background brightness slider
+	{
+		CUIRect Button, Label;
+		MainView.HSplitTop(5.0f, &Button, &MainView);
+		MainView.HSplitTop(20.0f, &Button, &MainView);
+		Button.VSplitLeft(190.0f, &Label, &Button);
+		Button.HMargin(2.0f, &Button);
+		UI()->DoLabelScaled(&Label, "Background brightness", 14.0f, -1);
+		g_Config.m_GoreBackgroundBrightness = (int)(DoScrollbarH(&g_Config.m_GoreBackgroundBrightness, &Button, g_Config.m_GoreBackgroundBrightness/100.0f)*100.0f);
+
 		MainView.HSplitTop(20.0f, 0, &MainView);
 	}
 }

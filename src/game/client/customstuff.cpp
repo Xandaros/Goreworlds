@@ -15,6 +15,8 @@ void CCustomStuff::Reset()
 	
 	for (int i = 0; i < MAX_CLIENTS; i++)
 		m_aPlayerInfo[i].Reset();
+	
+	m_KF = false;
 }
 
 

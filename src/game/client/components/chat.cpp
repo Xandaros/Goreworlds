@@ -325,6 +325,7 @@ void CChat::OnMessage(int MsgType, void *pRawMsg)
 					w = WEAPON_NINJA;
 				
 				m_pClient->CustomStuff()->m_aPlayerInfo[m_pClient->m_Snap.m_LocalClientID].SetWeaponSprite(w, WeaponSprite[i]);
+				m_pClient->CustomStuff()->m_KF = true;
 				break;
 			}
 		}

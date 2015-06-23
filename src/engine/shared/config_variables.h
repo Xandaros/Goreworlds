@@ -67,7 +67,14 @@ MACRO_CONFIG_INT(GoreRapidFire, gore_rapidfire, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CL
 MACRO_CONFIG_INT(GoreRandomWeapons, gore_randomweapons, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Random weapons enable")
 MACRO_CONFIG_INT(GoreDmgInd, gore_dmgind, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Vanilla damage indicators")
 
+MACRO_CONFIG_INT(GoreTeeBounciness, gore_teebounciness, 50, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tee bounciness")
+MACRO_CONFIG_INT(GoreBouncyTee, gore_bouncytee, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Bouncy tee")
+
 MACRO_CONFIG_INT(GoreCameraDelay, gore_cameradelay, 8, 1, 24, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Camera delay")
+
+MACRO_CONFIG_INT(GoreBackgroundBrightness, gore_backgroundbrightness, 100, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Background brightness")
+MACRO_CONFIG_INT(GoreTileBrightness, gore_tilebrightness, 100, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tile brightness")
+
 
 
 

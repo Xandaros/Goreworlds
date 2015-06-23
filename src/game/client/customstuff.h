@@ -37,6 +37,8 @@ public:
 	
 	CPlayerInfo m_aPlayerInfo[MAX_CLIENTS];
 	
+	// gamemode Killing Floor
+	bool m_KF;
 };
 
 
