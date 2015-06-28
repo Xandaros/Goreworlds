@@ -957,6 +957,20 @@ void CMenus::RenderSettingsCustom(CUIRect MainView)
 
 		MainView.HSplitTop(20.0f, 0, &MainView);
 	}
+	
+	
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreGamepad, Localize("xbox 360 controller support"), g_Config.m_GoreGamepad, &Button))
+		g_Config.m_GoreGamepad ^= 1;
+	
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreGamepadFlipMove, Localize("Flip move & aim axis"), g_Config.m_GoreGamepadFlipMove, &Button))
+		g_Config.m_GoreGamepadFlipMove ^= 1;
+	
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreGamepadFlipAttack, Localize("Flip attack & hook"), g_Config.m_GoreGamepadFlipAttack, &Button))
+		g_Config.m_GoreGamepadFlipAttack ^= 1;
+	
 }
 
 

@@ -17,7 +17,6 @@
 #include "keynames.h"
 #undef KEYS_INCLUDE
 
-bool UseGamepad = false;
 
 void CInput::AddEvent(int Unicode, int Key, int Flags)
 {
@@ -60,11 +59,11 @@ void CInput::Init()
 
 void CInput::MouseRelative(float *x, float *y)
 {
-	if (UseGamepad)
+	if (g_Config.m_GoreGamepad)
 	{
 		*x = m_Axis1.x;
 		*y = m_Axis1.y;
-		return;
+		//return;
 	}
 
 	int nx = 0, ny = 0;
@@ -82,8 +81,8 @@ void CInput::MouseRelative(float *x, float *y)
 		}
 	}
 
-	*x = nx*Sens;
-	*y = ny*Sens;
+	*x += nx*Sens;
+	*y += ny*Sens;
 }
 
 void CInput::MouseModeAbsolute()
@@ -133,10 +132,24 @@ int rapidCount = 0;
 
 int CInput::Update()
 {
-	if (UseGamepad)
+	if (g_Config.m_GoreGamepad)
 	{
 		if (!m_pGamepad)
+		{
 			m_pGamepad = SDL_JoystickOpen(0);
+		
+			if (!m_pGamepad)
+				g_Config.m_GoreGamepad = 0;
+			else
+			{
+				// print gamepad info
+				/*
+				char aBuf[128];
+				str_format(aBuf, sizeof(aBuf), "Gamepad: %d buttons", SDL_JoystickNumButtons(m_pGamepad));
+				Print(IConsole::OUTPUT_LEVEL_DEBUG, "client", aBuf);
+				*/
+			}
+		}
 	}
 	else
 	{
@@ -179,17 +192,36 @@ int CInput::Update()
 	if(i&SDL_BUTTON(8)) m_aInputState[m_InputCurrent][KEY_MOUSE_8] = 1;
 
 	// update gamepad status
-	if (m_pGamepad && UseGamepad)
+	if (m_pGamepad && g_Config.m_GoreGamepad)
 	{
-		m_Axis1.x = SDL_JoystickGetAxis(m_pGamepad, 4) / 100;
-		m_Axis1.y = SDL_JoystickGetAxis(m_pGamepad, 3) / 100;
+		//m_Axis1.x = SDL_JoystickGetAxis(m_pGamepad, 4) / 100;
+		//m_Axis1.y = SDL_JoystickGetAxis(m_pGamepad, 3) / 100;
 		
-		int Axis2 = SDL_JoystickGetAxis(m_pGamepad, 0) / 100;
-		int Jump = SDL_JoystickGetAxis(m_pGamepad, 1) / 100;
+		int Axis2;
+		int Jump;
 		int Hook = SDL_JoystickGetAxis(m_pGamepad, 2) / 100;
-		//int Shoot = SDL_JoystickGetAxis(m_pGamepad, 5) / 100;
+		//int Shoot = SDL_JoystickGetAxis(m_pGamepad, 7) / 100;
 		
-		/*
+		if (g_Config.m_GoreGamepadFlipAttack)
+			Hook *= -1;
+		
+		if (g_Config.m_GoreGamepadFlipMove)
+		{
+			m_Axis1.x = SDL_JoystickGetAxis(m_pGamepad, 0) / 100;
+			m_Axis1.y = SDL_JoystickGetAxis(m_pGamepad, 1) / 100;
+		
+			Axis2 = SDL_JoystickGetAxis(m_pGamepad, 4) / 100;
+			Jump = SDL_JoystickGetAxis(m_pGamepad, 3) / 100;
+		}
+		else
+		{
+			m_Axis1.x = SDL_JoystickGetAxis(m_pGamepad, 4) / 100;
+			m_Axis1.y = SDL_JoystickGetAxis(m_pGamepad, 3) / 100;
+		
+			Axis2 = SDL_JoystickGetAxis(m_pGamepad, 0) / 100;
+			Jump = SDL_JoystickGetAxis(m_pGamepad, 1) / 100;
+		}
+		
 		if (Hook > 110 && !m_Shoot)
 		{
 			m_Shoot = true;
@@ -208,7 +240,7 @@ int CInput::Update()
 			AddEvent(0, KEY_MOUSE_1, IInput::FLAG_RELEASE);
 			mouseLeft = false;
 		}	
-		*/
+		
 		
 		if (Hook < -110 && !m_Hook)
 		{
@@ -292,11 +324,11 @@ int CInput::Update()
 					// uncomment to enable gamepad
 					/*if (Event.key.keysym.sym == KEY_RCTRL)
 					{
-						UseGamepad = !UseGamepad;
+						g_Config.m_GoreGamepad = !g_Config.m_GoreGamepad;
 						break;
 					}*/
 				
-					if (UseGamepad &&
+					if (false && g_Config.m_GoreGamepad &&
 						Event.key.keysym.sym != KEY_RETURN &&
 						Event.key.keysym.sym != KEY_ESCAPE &&
 						Event.key.keysym.sym != KEY_UP &&
@@ -309,7 +341,7 @@ int CInput::Update()
 					Key = Event.key.keysym.sym; // ignore_convention
 					break;
 				case SDL_KEYUP:
-					if (UseGamepad &&
+					if (false && g_Config.m_GoreGamepad &&
 						Event.key.keysym.sym != KEY_RETURN &&
 						Event.key.keysym.sym != KEY_ESCAPE &&
 						Event.key.keysym.sym != KEY_UP &&
@@ -357,9 +389,23 @@ int CInput::Update()
 					//if(Event.button.button == 0) Key = KEY_MOUSE_1;
 					//if(Event.button.button == 3) Key = KEY_MOUSE_2;
 					if(Event.button.button == 0) Key = KEY_MOUSE_WHEEL_UP;
-					if(Event.button.button == 4) Key = KEY_MOUSE_1;
+					
+					// attack & hook
+					if (g_Config.m_GoreGamepadFlipAttack)
+					{
+						if(Event.button.button == 5) Key = KEY_MOUSE_1;
+						if(Event.button.button == 4) Key = KEY_MOUSE_2;
+					}
+					else
+					{
+						if(Event.button.button == 4) Key = KEY_MOUSE_1;
+						if(Event.button.button == 5) Key = KEY_MOUSE_2;
+					}
+					
 					if(Event.button.button == 3) Key = KEY_MOUSE_WHEEL_DOWN;
-					if(Event.button.button == 2) Key = KEY_LSHIFT;
+					if(Event.button.button == 2 || Event.button.button == 9) Key = KEY_LSHIFT;
+					
+					if(Event.button.button == 6 || Event.button.button == 7) Key = KEY_ESCAPE; // start
 					//if(Event.button.button == 1) Key = KEY_SPACE;
 					break;
 
@@ -370,7 +416,7 @@ int CInput::Update()
 
 			
 			//Rapidfire
-			if (Key == KEY_MOUSE_1)// && !UseGamepad)
+			if (Key == KEY_MOUSE_1)// && !g_Config.m_GoreGamepad)
 			{
 				if (Action == IInput::FLAG_RELEASE)
 				{

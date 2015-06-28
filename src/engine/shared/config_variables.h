@@ -76,6 +76,10 @@ MACRO_CONFIG_INT(GoreBackgroundBrightness, gore_backgroundbrightness, 100, 0, 10
 MACRO_CONFIG_INT(GoreTileBrightness, gore_tilebrightness, 100, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tile brightness")
 
 
+MACRO_CONFIG_INT(GoreGamepad, gore_gamepad, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Gamepad support")
+MACRO_CONFIG_INT(GoreGamepadFlipAttack, gore_gamepadflipattack, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Gamepad flip attack & hook")
+MACRO_CONFIG_INT(GoreGamepadFlipMove, gore_gamepadflipmove, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Gamepad flip move")
+
 
 
 MACRO_CONFIG_INT(SndNonactiveMute, snd_nonactive_mute, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "")

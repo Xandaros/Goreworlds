@@ -889,7 +889,7 @@ int CGraphics_SDL::Init()
 		if(g_Config.m_ClEventthread)
 			Systems |= SDL_INIT_EVENTTHREAD;
 
-		if(SDL_Init(Systems) < 0)
+		if(SDL_Init(Systems | SDL_INIT_JOYSTICK) < 0)
 		{
 			dbg_msg("gfx", "unable to init SDL: %s", SDL_GetError());
 			return -1;
