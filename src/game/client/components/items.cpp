@@ -18,6 +18,23 @@
 void CItems::OnReset()
 {
 	m_NumExtraProjectiles = 0;
+	
+	
+	// reset flag animations
+	for (int i = 0; i < 2; i++)
+	{
+		m_LastUpdate[i] = 0;
+		m_LastTiltUpdate[i] = 0;
+		m_FlagFrame[i] = 0;
+		
+		m_FlagPos[i] = vec2(0, 0);
+		m_FlagOldPos[i] = vec2(0, 0);
+		
+		m_FlagOffset[i] = vec2(0, 0);
+		m_FlagTargetOffset[i] = vec2(0, 0);
+		
+		m_FlagTilt[i] = 0;
+	}
 }
 
 
@@ -177,24 +194,35 @@ void CItems::RenderPickup(const CNetObj_Pickup *pPrev, const CNetObj_Pickup *pCu
 	Graphics()->QuadsEnd();
 }
 
+
+
+
+
 void CItems::RenderFlag(const CNetObj_Flag *pPrev, const CNetObj_Flag *pCurrent, const CNetObj_GameData *pPrevGameData, const CNetObj_GameData *pCurGameData)
 {
-	float Angle = 0.0f;
 	float Size = 42.0f;
-
+	
+	
 	Graphics()->BlendNormal();
-	Graphics()->TextureSet(g_pData->m_aImages[IMAGE_GAME].m_Id);
+	Graphics()->TextureSet(g_pData->m_aImages[IMAGE_FLAG].m_Id);
 	Graphics()->QuadsBegin();
+	
+	int Team = 0;
 
 	if(pCurrent->m_Team == TEAM_RED)
-		RenderTools()->SelectSprite(SPRITE_FLAG_RED);
+	{
+		RenderTools()->SelectSprite(SPRITE_FLAG_RED1+m_FlagFrame[0], m_FlagMirror[0] ? SPRITE_FLAG_FLIP_X : 0);
+	}
 	else
-		RenderTools()->SelectSprite(SPRITE_FLAG_BLUE);
-
-	Graphics()->QuadsSetRotation(Angle);
-
+	{
+		RenderTools()->SelectSprite(SPRITE_FLAG_BLUE1+m_FlagFrame[1], m_FlagMirror[1] ? SPRITE_FLAG_FLIP_X : 0);
+		Team = 1;
+	}
+		
+	Graphics()->QuadsSetRotation(m_FlagTilt[Team] / 20.0f);
+	
 	vec2 Pos = mix(vec2(pPrev->m_X, pPrev->m_Y), vec2(pCurrent->m_X, pCurrent->m_Y), Client()->IntraGameTick());
-
+	
 	if(pCurGameData)
 	{
 		// make sure that the flag isn't interpolated between capture and return
@@ -202,7 +230,7 @@ void CItems::RenderFlag(const CNetObj_Flag *pPrev, const CNetObj_Flag *pCurrent,
 			((pCurrent->m_Team == TEAM_RED && pPrevGameData->m_FlagCarrierRed != pCurGameData->m_FlagCarrierRed) ||
 			(pCurrent->m_Team == TEAM_BLUE && pPrevGameData->m_FlagCarrierBlue != pCurGameData->m_FlagCarrierBlue)))
 			Pos = vec2(pCurrent->m_X, pCurrent->m_Y);
-
+			
 		// make sure to use predicted position if we are the carrier
 		if(m_pClient->m_Snap.m_pLocalInfo &&
 			((pCurrent->m_Team == TEAM_RED && pCurGameData->m_FlagCarrierRed == m_pClient->m_Snap.m_LocalClientID) ||
@@ -210,10 +238,77 @@ void CItems::RenderFlag(const CNetObj_Flag *pPrev, const CNetObj_Flag *pCurrent,
 			Pos = m_pClient->m_LocalCharacterPos;
 	}
 
-	IGraphics::CQuadItem QuadItem(Pos.x, Pos.y-Size*0.75f, Size, Size*2);
+
+	
+	int64 currentTime = time_get();
+	if ((currentTime-m_LastUpdate[Team] > time_freq()) || (m_LastUpdate[Team] == 0))
+		m_LastUpdate[Team] = currentTime;
+	
+	if ((currentTime-m_LastTiltUpdate[Team] > time_freq()) || (m_LastTiltUpdate[Team] == 0))
+		m_LastTiltUpdate[Team] = currentTime;
+
+	
+	bool Once = true;
+	
+	int step = time_freq()/60;
+	
+	for (;m_LastTiltUpdate[Team] < currentTime; m_LastTiltUpdate[Team] += step)
+	{
+		m_FlagOffset[Team].x += (m_FlagTargetOffset[Team].x-m_FlagOffset[Team].x) / 3.0f;
+		
+		m_FlagTilt[Team] += (0-m_FlagTilt[Team]) / 3.0f;
+		m_FlagTilt[Team] -= (m_FlagPos[Team].x - m_FlagOldPos[Team].x) / 20.0f;
+		
+		if (Once)
+		{
+			//m_FlagOldPos[Team] = m_FlagPos[Team];
+			m_FlagOldPos[Team] = vec2(pPrev->m_X, pPrev->m_Y);
+			m_FlagPos[Team] = vec2(pCurrent->m_X, pCurrent->m_Y);
+			Once = false;
+		}
+	}
+
+	
+	float Speed = abs(m_FlagPos[Team].x - m_FlagOldPos[Team].x) / 2.0f;
+	step = time_freq()/(6+Speed);
+	
+	for (;m_LastUpdate[Team] < currentTime; m_LastUpdate[Team] += step)
+	{
+		if (m_FlagPos[Team].x > m_FlagOldPos[Team].x)
+		{
+			m_FlagMirror[Team] = true;
+			m_FlagTargetOffset[Team] = vec2(-16, 0);
+		}
+		if (m_FlagPos[Team].x < m_FlagOldPos[Team].x)
+		{
+			m_FlagMirror[Team] = false;
+			m_FlagTargetOffset[Team] = vec2(16, 0);
+		}
+		
+
+		if (Speed < 5)
+		{
+			if (m_FlagFrame[Team] > 1)
+				m_FlagFrame[Team] = 1;
+			else
+				m_FlagFrame[Team] = 0;
+		}
+		else
+		{
+			if (++m_FlagFrame[Team] > 5)
+				m_FlagFrame[Team] = 2;
+		}
+			
+	}
+	
+	
+	IGraphics::CQuadItem QuadItem(Pos.x+m_FlagOffset[Team].x + m_FlagTilt[Team] * 2, Pos.y-Size*0.75f+m_FlagOffset[Team].y, Size, Size*2);
 	Graphics()->QuadsDraw(&QuadItem, 1);
 	Graphics()->QuadsEnd();
 }
+
+
+
 
 
 void CItems::RenderLaser(const struct CNetObj_Laser *pCurrent)

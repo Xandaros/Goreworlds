@@ -20,6 +20,22 @@ class CItems : public CComponent
 	void RenderFlag(const CNetObj_Flag *pPrev, const CNetObj_Flag *pCurrent, const CNetObj_GameData *pPrevGameData, const CNetObj_GameData *pCurGameData);
 	void RenderLaser(const struct CNetObj_Laser *pCurrent);
 	
+	// flag animation
+	int64 m_LastUpdate[2];
+	int64 m_LastTiltUpdate[2];
+	
+	int m_FlagFrame[2];
+	
+	bool m_FlagMirror[2];
+	vec2 m_FlagPos[2];
+	vec2 m_FlagOldPos[2];
+	
+	vec2 m_FlagOffset[2];
+	vec2 m_FlagTargetOffset[2];
+	
+	float m_FlagTilt[2];
+	
+	
 public:
 	virtual void OnReset();
 	virtual void OnRender();
