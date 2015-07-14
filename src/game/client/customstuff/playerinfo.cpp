@@ -8,6 +8,7 @@
 #include <game/client/render.h>
 #include <engine/shared/config.h>
 
+#include <game/client/customstuff/tracer.h>
 
 
 
@@ -55,6 +56,12 @@ void CPlayerInfo::Reset()
 	
 	m_Weapon2Recoil = vec2(0, 0);
 	m_Weapon2RecoilVel = vec2(0, 0);
+	
+	// reset tracer
+	if (!m_pTracer)
+		m_pTracer = new CTracer();
+	else
+		m_pTracer->Clean();
 }
 
 
@@ -161,6 +168,15 @@ void CPlayerInfo::PhysicsTick(vec2 PlayerVel, vec2 PrevVel)
 	m_Weapon2RecoilVel *= 0.8f;
 
 	m_Weapon2Recoil += m_Weapon2RecoilVel;
+	
+	if (g_Config.m_GoreTracer)
+	{
+		float a = -GetAngle(PlayerVel);
+		float s = 20;
+		
+		m_pTracer->SetTracePos(m_Pos+vec2(sin(a)*s, cos(a)*s), m_Pos-vec2(sin(a)*s, cos(a)*s));
+		m_pTracer->Update(true);
+	}
 }
 	
 	
@@ -183,6 +199,10 @@ void CPlayerInfo::Tick()
 		m_aTeeSplatter[i].Tick();
 	
 	if (m_UpdateTimer++ > 5)
+	{
 		m_InUse = false;
+		if (m_pTracer)
+			m_pTracer->Clean();
+	}
 }
 

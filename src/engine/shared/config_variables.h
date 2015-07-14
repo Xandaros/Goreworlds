@@ -5,7 +5,7 @@
 #undef ENGINE_SHARED_CONFIG_VARIABLES_H // this file will be included several times
 
 // TODO: remove this
-#include "././game/variables.h"
+#include "././game/variables.h" 
 
 
 MACRO_CONFIG_STR(PlayerName, player_name, 16, "nameless tee", CFGFLAG_SAVE|CFGFLAG_CLIENT, "Name of the player")
@@ -66,6 +66,8 @@ MACRO_CONFIG_INT(GoreAimLine, gore_aimline, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT
 MACRO_CONFIG_INT(GoreRapidFire, gore_rapidfire, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Rapid fire enable")
 MACRO_CONFIG_INT(GoreRandomWeapons, gore_randomweapons, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Random weapons enable")
 MACRO_CONFIG_INT(GoreDmgInd, gore_dmgind, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Vanilla damage indicators")
+
+MACRO_CONFIG_INT(GoreTracer, gore_tracer, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tee tracer")
 
 MACRO_CONFIG_INT(GoreTeeBounciness, gore_teebounciness, 50, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tee bounciness")
 MACRO_CONFIG_INT(GoreBouncyTee, gore_bouncytee, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Bouncy tee")

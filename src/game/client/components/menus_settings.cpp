@@ -899,7 +899,11 @@ void CMenus::RenderSettingsCustom(CUIRect MainView)
 	
 	MainView.HSplitTop(20.0f, &Button, &MainView);
 	if(DoButton_CheckBox(&g_Config.m_GoreDmgInd, Localize("Enable vanilla damage indicators"), g_Config.m_GoreDmgInd, &Button))
-		g_Config.m_GoreDmgInd ^= 1;
+		g_Config.m_GoreDmgInd ^= 1;	
+	
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreTracer, Localize("Enable tee tracers"), g_Config.m_GoreTracer, &Button))
+		g_Config.m_GoreTracer ^= 1;
 	
 	
 	MainView.HSplitTop(20.0f, &Button, &MainView);

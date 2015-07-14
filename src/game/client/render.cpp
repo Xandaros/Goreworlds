@@ -14,6 +14,7 @@
 #include "render.h"
 
 #include <game/client/customstuff/playerinfo.h>
+#include <game/client/customstuff/tracer.h>
 
 static float gs_SpriteWScale;
 static float gs_SpriteHScale;
@@ -272,6 +273,13 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 	vec2 Position = Pos;
 
 	vec2 FeetOffset = PlayerInfo->m_FeetOffset;
+	
+	
+	if (PlayerInfo->m_pTracer && g_Config.m_GoreTracer)
+	{
+		PlayerInfo->m_pTracer->SetColor(vec4(pInfo->m_ColorBody.r, pInfo->m_ColorBody.g, pInfo->m_ColorBody.b, 0.4f));
+		PlayerInfo->m_pTracer->Render(this);
+	}
 	
 	//float HeadTilt = HeadTilt = Direction.y * (Direction.x < 0 ? -1 : 1) / 8.0f;
 	

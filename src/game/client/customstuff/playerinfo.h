@@ -55,6 +55,8 @@ public:
 	
 	void Reset();
 	
+	class CTracer *m_pTracer;
+	
 	// called from CCustomStuff
 	void Tick();
 	
