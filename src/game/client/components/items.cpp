@@ -269,7 +269,7 @@ void CItems::RenderFlag(const CNetObj_Flag *pPrev, const CNetObj_Flag *pCurrent,
 	}
 
 	
-	float Speed = abs(m_FlagPos[Team].x - m_FlagOldPos[Team].x) / 2.0f;
+	float Speed = abs(m_FlagPos[Team].x - m_FlagOldPos[Team].x) / 4.0f;
 	step = time_freq()/(6+Speed);
 	
 	for (;m_LastUpdate[Team] < currentTime; m_LastUpdate[Team] += step)
@@ -286,7 +286,7 @@ void CItems::RenderFlag(const CNetObj_Flag *pPrev, const CNetObj_Flag *pCurrent,
 		}
 		
 
-		if (Speed < 5)
+		if (Speed < 3)
 		{
 			if (m_FlagFrame[Team] > 1)
 				m_FlagFrame[Team] = 1;
