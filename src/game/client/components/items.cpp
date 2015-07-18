@@ -147,11 +147,29 @@ void CItems::RenderPickup(const CNetObj_Pickup *pPrev, const CNetObj_Pickup *pCu
 	vec2 Pos = mix(vec2(pPrev->m_X, pPrev->m_Y), vec2(pCurrent->m_X, pCurrent->m_Y), Client()->IntraGameTick());
 	float Angle = 0.0f;
 	float Size = 64.0f;
+	
+	bool SkipOffset = false;
+	
 	if (pCurrent->m_Type == POWERUP_WEAPON)
 	{
 		Angle = 0; //-pi/6;//-0.25f * pi * 2.0f;
 		RenderTools()->SelectSprite(g_pData->m_Weapons.m_aId[clamp(pCurrent->m_Subtype, 0, NUM_WEAPONS-1)].m_pSpriteBody);
 		Size = g_pData->m_Weapons.m_aId[clamp(pCurrent->m_Subtype, 0, NUM_WEAPONS-1)].m_VisualSize;
+	}
+	else if (pCurrent->m_Type == POWERUP_ARMOR && pCurrent->m_Subtype > 0)
+	{
+		if (pCurrent->m_Subtype == 1)
+		{
+			RenderTools()->SelectSprite(SPRITE_ELECTROMINE);
+			Pos.y -= 16.0f;
+			SkipOffset = true;
+		}
+		else if (pCurrent->m_Subtype == 2)
+		{
+			RenderTools()->SelectSprite(SPRITE_LANDMINE);
+			Pos.y -= 16.0f;
+			SkipOffset = true;
+		}
 	}
 	else
 	{
@@ -187,8 +205,13 @@ void CItems::RenderPickup(const CNetObj_Pickup *pPrev, const CNetObj_Pickup *pCu
 		if(m_pClient->m_Snap.m_pGameInfoObj && !(m_pClient->m_Snap.m_pGameInfoObj->m_GameStateFlags&GAMESTATEFLAG_PAUSED))
 			s_Time += Client()->LocalTime()-s_LastLocalTime;
  	}
-	Pos.x += cosf(s_Time*2.0f+Offset)*2.5f;
-	Pos.y += sinf(s_Time*2.0f+Offset)*2.5f;
+	
+	if (!SkipOffset)
+	{
+		Pos.x += cosf(s_Time*2.0f+Offset)*2.5f;
+		Pos.y += sinf(s_Time*2.0f+Offset)*2.5f;
+	}
+	
 	s_LastLocalTime = Client()->LocalTime();
 	RenderTools()->DrawSprite(Pos.x, Pos.y, Size);
 	Graphics()->QuadsEnd();

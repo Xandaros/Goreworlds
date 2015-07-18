@@ -388,6 +388,15 @@ container.sprites.Add(Sprite("pickup_armor", set_game, 12,2,2,2))
 container.sprites.Add(Sprite("pickup_weapon", set_game, 3,0,6,2))
 container.sprites.Add(Sprite("pickup_ninja", set_game, 2,10,8,2))
 
+container.sprites.Add(Sprite("flag_blue", set_game, 12,8,4,8))
+container.sprites.Add(Sprite("flag_red", set_game, 16,8,4,8))
+
+container.sprites.Add(Sprite("electromine", set_game, 20,8,4,3))
+container.sprites.Add(Sprite("landmine", set_game, 20,11,4,3))
+
+
+
+
 container.sprites.Add(Sprite("flag_blue1", set_flag, 0,0,1,1))
 container.sprites.Add(Sprite("flag_blue2", set_flag, 1,0,1,1))
 container.sprites.Add(Sprite("flag_blue3", set_flag, 2,0,1,1))
@@ -401,11 +410,6 @@ container.sprites.Add(Sprite("flag_red3", set_flag, 2,1,1,1))
 container.sprites.Add(Sprite("flag_red4", set_flag, 3,1,1,1))
 container.sprites.Add(Sprite("flag_red5", set_flag, 4,1,1,1))
 container.sprites.Add(Sprite("flag_red6", set_flag, 5,1,1,1))
-
-
-container.sprites.Add(Sprite("flag_blue", set_game, 12,8,4,8))
-container.sprites.Add(Sprite("flag_red", set_game, 16,8,4,8))
-
 
 container.sprites.Add(Sprite("weapon_hammer01", set_weapons, 0,0,4,3))
 container.sprites.Add(Sprite("weapon_hammer02", set_weapons, 4,0,4,3))
