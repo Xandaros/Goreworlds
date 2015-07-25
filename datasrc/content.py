@@ -9,7 +9,7 @@ class Sound(Struct):
 
 class SoundSet(Struct):
 	def __init__(self, name="", files=[]):
-		Struct.__init__(self, "CDataSoundset")
+		Struct.__init__(self, "CDataSoundset") 
 		self.name = String(name)
 		self.sounds = Array(Sound())
 		self.last = Int(-1)
@@ -414,6 +414,9 @@ container.sprites.Add(Sprite("flag_red6", set_flag, 5,1,1,1))
 container.sprites.Add(Sprite("weapon_hammer01", set_weapons, 0,0,4,3))
 container.sprites.Add(Sprite("weapon_hammer02", set_weapons, 4,0,4,3))
 
+container.sprites.Add(Sprite("weapon_cleaver", set_weapons, 8,0,4,2))
+container.sprites.Add(Sprite("weapon_knife", set_weapons, 12,0,5,2))
+
 container.sprites.Add(Sprite("weapon_gun01", set_weapons, 0,3,4,2))
 container.sprites.Add(Sprite("weapon_gun02", set_weapons, 4,3,4,2))
 
@@ -432,6 +435,7 @@ container.sprites.Add(Sprite("weapon_rifle01", set_weapons, 0,11,7,3))
 container.sprites.Add(Sprite("weapon_rifle02", set_weapons, 7,11,7,3))
 container.sprites.Add(Sprite("weapon_rifle03", set_weapons, 14,11,7,3))
 container.sprites.Add(Sprite("weapon_rifle04", set_weapons, 21,12,7,3))
+container.sprites.Add(Sprite("weapon_rifle05", set_weapons, 8,2,7,3))
 
 
 

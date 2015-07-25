@@ -15,6 +15,7 @@
 
 #include <game/client/customstuff/playerinfo.h>
 #include <game/client/customstuff/tracer.h>
+#include <game/client/customstuff/meleeweapon.h>
 
 static float gs_SpriteWScale;
 static float gs_SpriteHScale;
@@ -379,6 +380,72 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 	}
 
 	Graphics()->QuadsEnd();
+	
+	
+	
+	// render custom melee weapon
+	if (PlayerInfo->m_UseCustomMeleeWeapon && PlayerInfo->m_Weapon == WEAPON_HAMMER && g_Config.m_GoreCustomMelee)
+	{
+		CMeleeWeapon *Weapon = PlayerInfo->m_pMeleeWeapon;
+		
+		if (!Weapon)
+			return;
+		
+		// weapon direction
+		if (Dir.x < 0)
+			Weapon->m_TargetDir = -1;
+		else if (Dir.x > 0)
+			Weapon->m_TargetDir = 1;
+		
+		vec2 Offset;
+		Offset.x = sin(-Weapon->m_Angle)*Weapon->m_Offset.x;
+		Offset.y = cos(-Weapon->m_Angle)*Weapon->m_Offset.x;
+		
+		
+		Offset.x += sin(-Weapon->m_Angle-90*RAD)*Weapon->m_Offset.y*Weapon->m_FlipY;
+		Offset.y += cos(-Weapon->m_Angle-90*RAD)*Weapon->m_Offset.y*Weapon->m_FlipY;
+		
+		if (Weapon->m_pTracer)
+			Weapon->m_pTracer->Render(this);
+
+		
+		Graphics()->TextureSet(g_pData->m_aImages[IMAGE_WEAPONS].m_Id);
+		Graphics()->QuadsBegin();
+		
+		Graphics()->QuadsSetRotation((Weapon->m_Angle-90*RAD)*Weapon->m_Dir);
+		
+		
+		SelectSprite(Weapon->m_Sprite, (Weapon->m_FlipY < 0 ? SPRITE_FLAG_FLIP_Y : 0) + (Weapon->m_Dir < 0 ? SPRITE_FLAG_FLIP_X : 0));
+
+		
+		IGraphics::CQuadItem QuadItem(Position.x+(Weapon->m_Pos.x+Offset.x)*Weapon->m_Dir, Position.y+Weapon->m_Pos.y+Offset.y, Weapon->m_Size.x, Weapon->m_Size.y);
+		Graphics()->QuadsDraw(&QuadItem, 1);
+		
+		Graphics()->QuadsEnd();
+		
+		
+
+		float HandBaseSize = 10.0f;
+		
+		Graphics()->TextureSet(pInfo->m_Texture);
+		Graphics()->QuadsBegin();
+		Graphics()->SetColor(pInfo->m_ColorBody.r, pInfo->m_ColorBody.g, pInfo->m_ColorBody.b, pInfo->m_ColorBody.a);
+
+		Graphics()->QuadsSetRotation((Weapon->m_Angle-90*RAD)*Weapon->m_Dir);
+		
+		// two passes
+		for (int i = 0; i < 2; i++)
+		{
+			bool OutLine = i == 0;
+
+			SelectSprite(OutLine?SPRITE_TEE_HAND_OUTLINE:SPRITE_TEE_HAND, Weapon->m_Dir < 0 ? SPRITE_FLAG_FLIP_X : 0);
+			IGraphics::CQuadItem QuadItem(Position.x+Weapon->m_Pos.x*Weapon->m_Dir, Position.y+Weapon->m_Pos.y, 2*HandBaseSize, 2*HandBaseSize);
+			Graphics()->QuadsDraw(&QuadItem, 1);
+		}
+
+		Graphics()->QuadsSetRotation(0);
+		Graphics()->QuadsEnd();
+	}
 }
 
 

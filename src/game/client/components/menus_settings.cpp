@@ -894,6 +894,10 @@ void CMenus::RenderSettingsCustom(CUIRect MainView)
 		g_Config.m_GoreRapidFire ^= 1;
 
 	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreCustomMelee, Localize("Enable custom melee weapons"), g_Config.m_GoreCustomMelee, &Button))
+		g_Config.m_GoreCustomMelee ^= 1;
+	
+	MainView.HSplitTop(20.0f, &Button, &MainView);
 	if(DoButton_CheckBox(&g_Config.m_GoreRandomWeapons, Localize("Enable random weapon skins"), g_Config.m_GoreRandomWeapons, &Button))
 		g_Config.m_GoreRandomWeapons ^= 1;
 	

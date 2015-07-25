@@ -9,12 +9,14 @@
 #include <engine/shared/config.h>
 
 #include <game/client/customstuff/tracer.h>
+#include <game/client/customstuff/meleeweapon.h>
 
 
 
 
 CPlayerInfo::CPlayerInfo()
 {
+	m_pTracer = NULL;
 	Reset();
 }
 
@@ -62,6 +64,14 @@ void CPlayerInfo::Reset()
 		m_pTracer = new CTracer();
 	else
 		m_pTracer->Clean();
+
+	// reset weapon
+	if (!m_pMeleeWeapon)
+		m_pMeleeWeapon = new CMeleeWeapon();
+	else
+		m_pMeleeWeapon->Reset();
+	
+	m_UseCustomMeleeWeapon = false;
 }
 
 
@@ -73,6 +83,9 @@ void CPlayerInfo::Update(vec2 Pos)
 	m_InUse = true;
 	m_UpdateTimer = 0;
 	m_Pos = Pos;
+	
+	if (m_pMeleeWeapon)
+		m_pMeleeWeapon->m_PlayerPos = Pos;
 }
 
 
@@ -177,6 +190,9 @@ void CPlayerInfo::PhysicsTick(vec2 PlayerVel, vec2 PrevVel)
 		m_pTracer->SetTracePos(m_Pos+vec2(sin(a)*s, cos(a)*s), m_Pos-vec2(sin(a)*s, cos(a)*s));
 		m_pTracer->Update(true);
 	}
+	
+	if (m_pMeleeWeapon)
+		m_pMeleeWeapon->Tick();
 }
 	
 	

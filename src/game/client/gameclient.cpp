@@ -1,5 +1,7 @@
 /* (c) Magnus Auvinen. See licence.txt in the root of the distribution for more information. */
 /* If you are missing that file, acquire a complete release at teeworlds.com.                */
+#include <string.h>
+
 #include <engine/editor.h>
 #include <engine/engine.h>
 #include <engine/friends.h>
@@ -799,8 +801,46 @@ void CGameClient::OnNewSnapshot()
 				m_aClients[ClientID].m_SkinInfo.m_ColorFeet = m_pSkins->GetColorV4(m_aClients[ClientID].m_ColorFeet);
 				m_aClients[ClientID].m_SkinInfo.m_Size = 64;
 
+				
+				
+				// custom enemy skins for Killing Floor mod
+				if (CustomStuff()->m_KF && strcmp(m_aClients[ClientID].m_aName, "") == 0)
+				{
+					if (strcmp(m_aClients[ClientID].m_aSkinName, "saddo") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_runner", 64);
+					
+					else if (strcmp(m_aClients[ClientID].m_aSkinName, "brownbear") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_shotgunner", 64);
+					
+					else if (strcmp(m_aClients[ClientID].m_aSkinName, "pinky") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_bomber1", 64);
+					
+					else if (strcmp(m_aClients[ClientID].m_aSkinName, "redstripe") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_bomber2", 64);
+					
+					else if (strcmp(m_aClients[ClientID].m_aSkinName, "coala") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_fly", 64);
+					
+					else if (strcmp(m_aClients[ClientID].m_aSkinName, "bluekitty") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_electro", 64);
+					
+					else if (strcmp(m_aClients[ClientID].m_aSkinName, "bluestripe") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_laser", 64);
+					
+					else if (strcmp(m_aClients[ClientID].m_aSkinName, "twintri") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_lightning", 64);
+					
+					else if (strcmp(m_aClients[ClientID].m_aSkinName, "limekitty") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_bosshead", 64);
+					
+					else if (strcmp(m_aClients[ClientID].m_aSkinName, "toptri") == 0)
+						str_copy(m_aClients[ClientID].m_aSkinName, "x_kf_bossbody", 64);
+				}
+				
+				
 				// find new skin
 				m_aClients[ClientID].m_SkinID = g_GameClient.m_pSkins->Find(m_aClients[ClientID].m_aSkinName);
+				
 				if(m_aClients[ClientID].m_SkinID < 0)
 				{
 					m_aClients[ClientID].m_SkinID = g_GameClient.m_pSkins->Find("default");
@@ -1133,6 +1173,7 @@ void CGameClient::CClientData::UpdateRenderInfo()
 	if(g_GameClient.m_Snap.m_pGameInfoObj && g_GameClient.m_Snap.m_pGameInfoObj->m_GameFlags&GAMEFLAG_TEAMS)
 	{
 		m_RenderInfo.m_Texture = g_GameClient.m_pSkins->Get(m_SkinID)->m_ColorTexture;
+
 		const int TeamColors[2] = {65387, 10223467};
 		if(m_Team >= TEAM_RED && m_Team <= TEAM_BLUE)
 		{

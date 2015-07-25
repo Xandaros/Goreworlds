@@ -77,6 +77,12 @@ public:
 		m_Color1 = Color;
 		m_Color2 = Color;
 	}
+	
+	void SetColor(vec4 Color1, vec4 Color2)
+	{
+		m_Color1 = Color1;
+		m_Color2 = Color2;
+	}
 };
 
 

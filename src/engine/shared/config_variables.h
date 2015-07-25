@@ -64,6 +64,7 @@ MACRO_CONFIG_INT(GoreTeeSplatter, gore_teesplatter, 1, 0, 1, CFGFLAG_SAVE|CFGFLA
 
 MACRO_CONFIG_INT(GoreAimLine, gore_aimline, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Aim line enable")
 MACRO_CONFIG_INT(GoreRapidFire, gore_rapidfire, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Rapid fire enable")
+MACRO_CONFIG_INT(GoreCustomMelee, gore_custommelee, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Custom melee weapons")
 MACRO_CONFIG_INT(GoreRandomWeapons, gore_randomweapons, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Random weapons enable")
 MACRO_CONFIG_INT(GoreDmgInd, gore_dmgind, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Vanilla damage indicators")
 

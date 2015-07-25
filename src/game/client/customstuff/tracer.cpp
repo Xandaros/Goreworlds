@@ -1,7 +1,6 @@
 #include "tracer.h"
 
 #include <math.h>
-
 #include <base/math.h>
 
 #include <engine/graphics.h>

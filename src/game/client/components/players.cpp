@@ -16,6 +16,7 @@
 
 #include <game/client/customstuff.h>
 #include <game/client/customstuff/playerinfo.h>
+#include <game/client/customstuff/meleeweapon.h>
 
 #include <game/client/components/flow.h>
 #include <game/client/components/skins.h>
@@ -307,6 +308,9 @@ void CPlayers::RenderPlayer(
 	{
 		float ct = (Client()->PrevGameTick()-Player.m_AttackTick)/(float)SERVER_TICK_SPEED + s_LastGameTickTime;
 		State.Add(&g_pData->m_aAnimations[ANIM_HAMMER_SWING], clamp(ct*5.0f,0.0f,1.0f), 1.0f);
+		
+		if (CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_pMeleeWeapon && ct < 0.3f)
+			CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_pMeleeWeapon->Hit(Player.m_AttackTick);
 	}
 	if (Player.m_Weapon == WEAPON_NINJA)
 	{
@@ -394,6 +398,8 @@ void CPlayers::RenderPlayer(
 		Graphics()->BlendNormal();
 	}
 
+	
+	CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_Weapon = Player.m_Weapon;
 
 	// draw gun
 	{
@@ -412,20 +418,25 @@ void CPlayers::RenderPlayer(
 		vec2 p;
 		if (Player.m_Weapon == WEAPON_HAMMER)
 		{
-			// Static position for hammer
-			p = Position + vec2(State.GetAttach()->m_X, State.GetAttach()->m_Y);
-			p.y += g_pData->m_Weapons.m_aId[iw].m_Offsety;
-			// if attack is under way, bash stuffs
-			if(Direction.x < 0)
+			CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_UseCustomMeleeWeapon = true;
+			if (!CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_UseCustomMeleeWeapon ||
+				!g_Config.m_GoreCustomMelee)
 			{
-				Graphics()->QuadsSetRotation(-pi/2-State.GetAttach()->m_Angle*pi*2);
-				p.x -= g_pData->m_Weapons.m_aId[iw].m_Offsetx;
+				// Static position for hammer
+				p = Position + vec2(State.GetAttach()->m_X, State.GetAttach()->m_Y);
+				p.y += g_pData->m_Weapons.m_aId[iw].m_Offsety;
+				// if attack is under way, bash stuffs
+				if(Direction.x < 0)
+				{
+					Graphics()->QuadsSetRotation(-pi/2-State.GetAttach()->m_Angle*pi*2);
+					p.x -= g_pData->m_Weapons.m_aId[iw].m_Offsetx;
+				}
+				else
+				{
+					Graphics()->QuadsSetRotation(-pi/2+State.GetAttach()->m_Angle*pi*2);
+				}
+				RenderTools()->DrawSprite(p.x, p.y, g_pData->m_Weapons.m_aId[iw].m_VisualSize);
 			}
-			else
-			{
-				Graphics()->QuadsSetRotation(-pi/2+State.GetAttach()->m_Angle*pi*2);
-			}
-			RenderTools()->DrawSprite(p.x, p.y, g_pData->m_Weapons.m_aId[iw].m_VisualSize);
 		}
 		else if (Player.m_Weapon == WEAPON_NINJA)
 		{

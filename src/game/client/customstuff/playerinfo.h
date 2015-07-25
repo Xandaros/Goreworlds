@@ -56,6 +56,11 @@ public:
 	void Reset();
 	
 	class CTracer *m_pTracer;
+	class CMeleeWeapon *m_pMeleeWeapon;
+	
+	bool m_UseCustomMeleeWeapon;
+	
+	int m_Weapon;
 	
 	// called from CCustomStuff
 	void Tick();
