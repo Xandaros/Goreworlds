@@ -391,6 +391,8 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 		if (!Weapon)
 			return;
 		
+		Position += PlayerInfo->m_Weapon2Recoil;
+		
 		// weapon direction
 		if (Dir.x < 0)
 			Weapon->m_TargetDir = -1;
