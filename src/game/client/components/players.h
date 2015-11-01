@@ -20,7 +20,9 @@ class CPlayers : public CComponent
 		const CNetObj_PlayerInfo *pPrevInfo,
 		const CNetObj_PlayerInfo *pPlayerInfo
 	);
-
+	
+	vec3 GetColorV3(int v);
+	
 public:
 	virtual void OnRender();
 };

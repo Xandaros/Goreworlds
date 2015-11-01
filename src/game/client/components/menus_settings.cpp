@@ -860,6 +860,42 @@ void CMenus::RenderSettingsSound(CUIRect MainView)
 
 
 // custom menu for the client
+void CMenus::RenderSettingsGamepad(CUIRect MainView)
+{
+	CUIRect Button;
+	MainView.VSplitMid(&MainView, 0);
+	
+	
+	MainView.HSplitTop(24.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreGamepad, Localize("xbox 360 controller support"), g_Config.m_GoreGamepad, &Button))
+		g_Config.m_GoreGamepad ^= 1;
+	
+	MainView.HSplitTop(24.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreGamepadFlipMove, Localize("Flip move & aim axis"), g_Config.m_GoreGamepadFlipMove, &Button))
+		g_Config.m_GoreGamepadFlipMove ^= 1;
+	
+	MainView.HSplitTop(24.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreGamepadFlipAttack, Localize("Flip attack & hook"), g_Config.m_GoreGamepadFlipAttack, &Button))
+		g_Config.m_GoreGamepadFlipAttack ^= 1;
+	
+	// gamepad sensitivity slider
+	{
+		CUIRect Button, Label;
+		MainView.HSplitTop(25.0f, &Button, &MainView);
+		MainView.HSplitTop(24.0f, &Button, &MainView);
+		Button.VSplitLeft(190.0f, &Label, &Button);
+		Button.HMargin(2.0f, &Button);
+		UI()->DoLabelScaled(&Label, "Gamepad analog stick sensitivity", 14.0f, -1);
+		MainView.HSplitTop(24.0f, &Button, &MainView);
+		g_Config.m_GoreGamepadSensitivity = (int)(DoScrollbarH(&g_Config.m_GoreGamepadSensitivity, &Button, g_Config.m_GoreGamepadSensitivity/100.0f)*100.0f);
+
+		MainView.HSplitTop(20.0f, 0, &MainView);
+	}
+	
+}
+
+
+// custom menu for the client
 void CMenus::RenderSettingsCustom(CUIRect MainView)
 {
 	CUIRect Button;
@@ -907,7 +943,11 @@ void CMenus::RenderSettingsCustom(CUIRect MainView)
 	
 	MainView.HSplitTop(20.0f, &Button, &MainView);
 	if(DoButton_CheckBox(&g_Config.m_GoreTracer, Localize("Enable tee tracers"), g_Config.m_GoreTracer, &Button))
-		g_Config.m_GoreTracer ^= 1;
+		g_Config.m_GoreTracer ^= 1;	
+	
+	MainView.HSplitTop(20.0f, &Button, &MainView);
+	if(DoButton_CheckBox(&g_Config.m_GoreCustomTeams, Localize("Enable custom team styles"), g_Config.m_GoreCustomTeams, &Button))
+		g_Config.m_GoreCustomTeams ^= 1;
 	
 	
 	MainView.HSplitTop(20.0f, &Button, &MainView);
@@ -965,20 +1005,6 @@ void CMenus::RenderSettingsCustom(CUIRect MainView)
 
 		MainView.HSplitTop(20.0f, 0, &MainView);
 	}
-	
-	
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_GoreGamepad, Localize("xbox 360 controller support"), g_Config.m_GoreGamepad, &Button))
-		g_Config.m_GoreGamepad ^= 1;
-	
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_GoreGamepadFlipMove, Localize("Flip move & aim axis"), g_Config.m_GoreGamepadFlipMove, &Button))
-		g_Config.m_GoreGamepadFlipMove ^= 1;
-	
-	MainView.HSplitTop(20.0f, &Button, &MainView);
-	if(DoButton_CheckBox(&g_Config.m_GoreGamepadFlipAttack, Localize("Flip attack & hook"), g_Config.m_GoreGamepadFlipAttack, &Button))
-		g_Config.m_GoreGamepadFlipAttack ^= 1;
-	
 }
 
 
@@ -1133,6 +1159,7 @@ void CMenus::RenderSettings(CUIRect MainView)
 		Localize("Controls"),
 		Localize("Graphics"),
 		Localize("Sound"),
+		"Gamepad",
 		"Custom"};
 
 	int NumTabs = (int)(sizeof(aTabs)/sizeof(*aTabs));
@@ -1162,6 +1189,8 @@ void CMenus::RenderSettings(CUIRect MainView)
 	else if(s_SettingsPage == 6)
 		RenderSettingsSound(MainView);
 	else if(s_SettingsPage == 7)
+		RenderSettingsGamepad(MainView);
+	else if(s_SettingsPage == 8)
 		RenderSettingsCustom(MainView);
 
 	if(m_NeedRestartGraphics || m_NeedRestartSound)

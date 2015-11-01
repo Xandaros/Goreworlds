@@ -34,12 +34,13 @@ void CNamePlates::RenderNameplate(
 
 		TextRender()->TextOutlineColor(0.0f, 0.0f, 0.0f, 0.5f*a);
 		TextRender()->TextColor(1.0f, 1.0f, 1.0f, a);
+		
 		if(g_Config.m_ClNameplatesTeamcolors && m_pClient->m_Snap.m_pGameInfoObj && m_pClient->m_Snap.m_pGameInfoObj->m_GameFlags&GAMEFLAG_TEAMS)
 		{
 			if(pPlayerInfo->m_Team == TEAM_RED)
-				TextRender()->TextColor(1.0f, 0.5f, 0.5f, a);
+				TextRender()->TextColor(217/255.0f, 140/255.0f, 65/255.0f, a);
 			else if(pPlayerInfo->m_Team == TEAM_BLUE)
-				TextRender()->TextColor(0.7f, 0.7f, 1.0f, a);
+				TextRender()->TextColor(100/255.0f, 140/255.0f, 100/255.0f, a);
 		}
 
 		TextRender()->Text(0, Position.x-tw/2.0f, Position.y-FontSize-38.0f, FontSize, pName, -1);

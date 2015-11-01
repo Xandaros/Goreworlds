@@ -270,6 +270,7 @@ class CMenus : public CComponent
 	void RenderSettingsControls(CUIRect MainView);
 	void RenderSettingsGraphics(CUIRect MainView);
 	void RenderSettingsSound(CUIRect MainView);
+	void RenderSettingsGamepad(CUIRect MainView);
 	void RenderSettingsCustom(CUIRect MainView);
 	void RenderSettings(CUIRect MainView);
 

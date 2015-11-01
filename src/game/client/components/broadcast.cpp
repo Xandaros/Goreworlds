@@ -11,6 +11,12 @@
 #include <game/client/components/motd.h>
 #include <game/client/components/scoreboard.h>
 
+
+#include <game/upgradelist.h>
+
+#include <game/client/customstuff.h>
+#include <game/client/customstuff/playerinfo.h>
+
 #include "broadcast.h"
 
 void CBroadcast::OnReset()
@@ -46,6 +52,28 @@ void CBroadcast::OnMessage(int MsgType, void *pRawMsg)
 		TextRender()->TextEx(&Cursor, m_aBroadcastText, -1);
 		m_BroadcastRenderOffset = 150*Graphics()->ScreenAspect()-Cursor.m_X/2;
 		m_BroadcastTime = time_get()+time_freq()*10;
+		
+		// change weapon skin based on broadcast messages
+		for (int i = 0; i < NUM_CUSTOMWEAPONS; i++)
+		{
+			char aBuf[128];
+			str_format(aBuf, sizeof(aBuf), "Using: %s", aCustomWeapon[i].m_Name);
+
+			if ( strcmp(pMsg->m_pMessage, aBuf) == 0)
+			{
+				int w = aCustomWeapon[i].m_ParentWeapon;
+				
+				if (aCustomWeapon[i].m_ProjectileType == PROJTYPE_SWORD)
+					w = WEAPON_NINJA;
+				
+				m_pClient->CustomStuff()->m_aPlayerInfo[m_pClient->m_Snap.m_LocalClientID].SetWeaponSprite(w, WeaponSprite[i]);
+				m_pClient->CustomStuff()->m_KF = true;
+				g_Config.m_GoreCustomWeapons = 1;
+				
+				// don't display the message at all
+				//return;
+			}
+		}
 	}
 }
 

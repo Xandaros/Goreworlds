@@ -81,6 +81,8 @@ public:
 	void MapscreenToWorld(float CenterX, float CenterY, float ParallaxX, float ParallaxY,
 		float OffsetX, float OffsetY, float Aspect, float Zoom, float *pPoints);
 
+	vec3 GetColorV3(int v);
+
 };
 
 #endif

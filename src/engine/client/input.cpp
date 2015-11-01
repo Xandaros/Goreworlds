@@ -61,8 +61,11 @@ void CInput::MouseRelative(float *x, float *y)
 {
 	if (g_Config.m_GoreGamepad)
 	{
-		*x = m_Axis1.x;
-		*y = m_Axis1.y;
+		if (abs(m_Axis1.x) + abs(m_Axis1.y) > 25)
+		{
+			*x = m_Axis1.x*0.075f*float(g_Config.m_GoreGamepadSensitivity)/25.0f;
+			*y = m_Axis1.y*0.075f*float(g_Config.m_GoreGamepadSensitivity)/25.0f;
+		}
 		//return;
 	}
 
@@ -405,7 +408,8 @@ int CInput::Update()
 					if(Event.button.button == 3) Key = KEY_MOUSE_WHEEL_DOWN;
 					if(Event.button.button == 2 || Event.button.button == 9) Key = KEY_LSHIFT;
 					
-					if(Event.button.button == 6 || Event.button.button == 7) Key = KEY_ESCAPE; // start
+					if(Event.button.button == 7) Key = KEY_ESCAPE; // start
+					if(Event.button.button == 6) Key = KEY_TAB; // select
 					//if(Event.button.button == 1) Key = KEY_SPACE;
 					break;
 

@@ -77,6 +77,9 @@ void CMeleeWeapon::Reset()
 	else
 		m_pTracer->Clean();
 	
+	//SetHammer();
+
+	
 	switch (rand()%3)
 	{
 	case 0:

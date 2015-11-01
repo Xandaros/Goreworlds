@@ -71,8 +71,34 @@ void CPlayerInfo::Reset()
 	else
 		m_pMeleeWeapon->Reset();
 	
-	m_UseCustomMeleeWeapon = false;
+	m_HatTargetAngle = 0;
+	m_HatAngle = 0;	
+	
+	m_UseCustomMeleeWeapon = true;
+	m_UseHat = false;
+	
+	m_Hat = -1;
+	
+	m_Local = false;
 }
+
+
+void CPlayerInfo::SetTerroristHat()
+{
+	m_UseHat = true;
+	
+	if (m_Hat < SPRITE_HAT_TERRORIST1 || m_Hat > SPRITE_HAT_TERRORIST2)
+		m_Hat = SPRITE_HAT_TERRORIST1+rand()%2;
+}
+
+void CPlayerInfo::SetCounterterroristHat()
+{
+	m_UseHat = true;
+	
+	if (m_Hat < SPRITE_HAT_COUNTERTERRORIST1 || m_Hat > SPRITE_HAT_COUNTERTERRORIST3)
+		m_Hat = SPRITE_HAT_COUNTERTERRORIST2;
+}
+
 
 
 void CPlayerInfo::Update(vec2 Pos)
@@ -88,6 +114,17 @@ void CPlayerInfo::Update(vec2 Pos)
 		m_pMeleeWeapon->m_PlayerPos = Pos;
 }
 
+
+void CPlayerInfo::SetLocal()
+{
+	if (!m_Local)
+	{
+		m_Local = true;
+		//m_UseHat = true;
+		//if (m_pMeleeWeapon)
+		//	m_pMeleeWeapon->SetSword();
+	}
+}
 
 
 void CPlayerInfo::AddTeeSplatter(float Angle)
@@ -193,6 +230,8 @@ void CPlayerInfo::PhysicsTick(vec2 PlayerVel, vec2 PrevVel)
 	
 	if (m_pMeleeWeapon)
 		m_pMeleeWeapon->Tick();
+	
+	m_HatAngle += (m_HatTargetAngle - m_HatAngle) / 4.0f;
 }
 	
 	

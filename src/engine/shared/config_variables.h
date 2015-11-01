@@ -8,7 +8,7 @@
 #include "././game/variables.h" 
 
 
-MACRO_CONFIG_STR(PlayerName, player_name, 16, "nameless tee", CFGFLAG_SAVE|CFGFLAG_CLIENT, "Name of the player")
+MACRO_CONFIG_STR(PlayerName, player_name, 16, "bloodless tee", CFGFLAG_SAVE|CFGFLAG_CLIENT, "Name of the player")
 MACRO_CONFIG_STR(PlayerClan, player_clan, 12, "", CFGFLAG_SAVE|CFGFLAG_CLIENT, "Clan of the player")
 MACRO_CONFIG_INT(PlayerCountry, player_country, -1, -1, 1000, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Country of the player")
 MACRO_CONFIG_STR(Password, password, 32, "", CFGFLAG_CLIENT|CFGFLAG_SERVER, "Password to the server")
@@ -51,35 +51,39 @@ MACRO_CONFIG_INT(BrMaxRequests, br_max_requests, 25, 0, 1000, CFGFLAG_SAVE|CFGFL
 MACRO_CONFIG_INT(SndBufferSize, snd_buffer_size, 512, 128, 32768, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Sound buffer size")
 MACRO_CONFIG_INT(SndRate, snd_rate, 48000, 0, 0, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Sound mixing rate")
 MACRO_CONFIG_INT(SndEnable, snd_enable, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Sound enable")
-MACRO_CONFIG_INT(SndMusic, snd_enable_music, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Play background music")
+MACRO_CONFIG_INT(SndMusic, snd_enable_music, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Play background music")
 MACRO_CONFIG_INT(SndVolume, snd_volume, 100, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Sound volume")
 MACRO_CONFIG_INT(SndDevice, snd_device, -1, 0, 0, CFGFLAG_SAVE|CFGFLAG_CLIENT, "(deprecated) Sound device to use")
 
 
 
 
-MACRO_CONFIG_INT(GoreBlood, gore_blood, 30, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Blood amount")
+MACRO_CONFIG_INT(GoreCustomWeapons, gore_customweapons, 0, 0, 1, CFGFLAG_CLIENT, "Use custom weapon set (kf & cstt)")
+
+MACRO_CONFIG_INT(GoreBlood, gore_blood, 25, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Blood amount")
 MACRO_CONFIG_INT(GoreWallSplatter, gore_wallsplatter, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Wall splatter enable")
 MACRO_CONFIG_INT(GoreTeeSplatter, gore_teesplatter, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tee splatter enable")
 
-MACRO_CONFIG_INT(GoreAimLine, gore_aimline, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Aim line enable")
+MACRO_CONFIG_INT(GoreAimLine, gore_aimline, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Aim line enable")
 MACRO_CONFIG_INT(GoreRapidFire, gore_rapidfire, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Rapid fire enable")
 MACRO_CONFIG_INT(GoreCustomMelee, gore_custommelee, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Custom melee weapons")
-MACRO_CONFIG_INT(GoreRandomWeapons, gore_randomweapons, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Random weapons enable")
+MACRO_CONFIG_INT(GoreRandomWeapons, gore_randomweapons, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Random weapons enable")
 MACRO_CONFIG_INT(GoreDmgInd, gore_dmgind, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Vanilla damage indicators")
 
-MACRO_CONFIG_INT(GoreTracer, gore_tracer, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tee tracer")
+MACRO_CONFIG_INT(GoreTracer, gore_tracer, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tee tracer")
+MACRO_CONFIG_INT(GoreCustomTeams, gore_customteams, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Custom team styles")
 
 MACRO_CONFIG_INT(GoreTeeBounciness, gore_teebounciness, 50, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tee bounciness")
 MACRO_CONFIG_INT(GoreBouncyTee, gore_bouncytee, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Bouncy tee")
 
-MACRO_CONFIG_INT(GoreCameraDelay, gore_cameradelay, 8, 1, 24, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Camera delay")
+MACRO_CONFIG_INT(GoreCameraDelay, gore_cameradelay, 12, 1, 24, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Camera delay")
 
-MACRO_CONFIG_INT(GoreBackgroundBrightness, gore_backgroundbrightness, 100, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Background brightness")
-MACRO_CONFIG_INT(GoreTileBrightness, gore_tilebrightness, 100, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tile brightness")
+MACRO_CONFIG_INT(GoreBackgroundBrightness, gore_backgroundbrightness, 60, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Background brightness")
+MACRO_CONFIG_INT(GoreTileBrightness, gore_tilebrightness, 80, 0, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Tile brightness")
 
 
-MACRO_CONFIG_INT(GoreGamepad, gore_gamepad, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Gamepad support")
+MACRO_CONFIG_INT(GoreGamepad, gore_gamepad, 1, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Gamepad support")
+MACRO_CONFIG_INT(GoreGamepadSensitivity, gore_gamepadsensitivity, 50, 5, 100, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Gamepad analog stick sensitivity")
 MACRO_CONFIG_INT(GoreGamepadFlipAttack, gore_gamepadflipattack, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Gamepad flip attack & hook")
 MACRO_CONFIG_INT(GoreGamepadFlipMove, gore_gamepadflipmove, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Gamepad flip move")
 

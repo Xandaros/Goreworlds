@@ -334,6 +334,8 @@ void CPlayers::RenderPlayer(
 		);
 	}
 	
+	if (pInfo.m_Local)
+		CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].SetLocal();
 
 	// draw aim line 
 	if (pPlayerInfo->m_Local && g_Config.m_GoreAimLine)
@@ -663,8 +665,15 @@ void CPlayers::RenderPlayer(
 	}
 }
 
+vec3 CPlayers::GetColorV3(int v)
+{
+	return HslToRgb(vec3(((v>>16)&0xff)/255.0f, ((v>>8)&0xff)/255.0f, 0.5f+(v&0xff)/255.0f*0.5f));
+}
+
 void CPlayers::OnRender()
 {
+	const int aTeamColors[2] = {65387, 10223467};
+	
 	// update RenderInfo for ninja
 	bool IsTeamplay = false;
 	if(m_pClient->m_Snap.m_pGameInfoObj)
@@ -672,10 +681,43 @@ void CPlayers::OnRender()
 	for(int i = 0; i < MAX_CLIENTS; ++i)
 	{
 		m_aRenderInfo[i] = m_pClient->m_aClients[i].m_RenderInfo;
+		
+		vec3 TeamColor = GetColorV3(aTeamColors[TEAM_RED]);
+		
+		// change to custom team colors
+		if (g_Config.m_GoreCustomTeams)
+		{
+			if (m_aRenderInfo[i].m_ColorBody.r == TeamColor.r && m_aRenderInfo[i].m_ColorBody.g == TeamColor.g && m_aRenderInfo[i].m_ColorBody.b == TeamColor.b)
+			{
+				m_aRenderInfo[i].m_ColorBody.r = 217/255.0f;
+				m_aRenderInfo[i].m_ColorBody.g = 140/255.0f;
+				m_aRenderInfo[i].m_ColorBody.b = 65/255.0f;
+				
+				m_aRenderInfo[i].m_ColorFeet.r = 255/255.0f;
+				m_aRenderInfo[i].m_ColorFeet.g = 140/255.0f;
+				m_aRenderInfo[i].m_ColorFeet.b = 10/255.0f;
+			}
+			else
+			{
+				TeamColor = GetColorV3(aTeamColors[TEAM_BLUE]);
+					
+				if (m_aRenderInfo[i].m_ColorBody.r == TeamColor.r && m_aRenderInfo[i].m_ColorBody.g == TeamColor.g && m_aRenderInfo[i].m_ColorBody.b == TeamColor.b)
+				{
+					m_aRenderInfo[i].m_ColorBody.r = 100/255.0f;
+					m_aRenderInfo[i].m_ColorBody.g = 140/255.0f;
+					m_aRenderInfo[i].m_ColorBody.b = 100/255.0f;
+					
+					m_aRenderInfo[i].m_ColorFeet.r = 55/255.0f;
+					m_aRenderInfo[i].m_ColorFeet.g = 155/255.0f;
+					m_aRenderInfo[i].m_ColorFeet.b = 105/255.0f;
+				}
+			}
+		}
+		
+		/* skip this
 		if(m_pClient->m_Snap.m_aCharacters[i].m_Cur.m_Weapon == WEAPON_NINJA)
 		{
 			// change the skin for the player to the ninja
-			/*
 			int Skin = m_pClient->m_pSkins->Find("x_ninja");
 			if(Skin != -1)
 			{
@@ -688,8 +730,8 @@ void CPlayers::OnRender()
 					m_aRenderInfo[i].m_ColorFeet = vec4(1,1,1,1);
 				}
 			}
-			*/
 		}
+		*/
 	}
 
 	// render other players in two passes, first pass we render the other, second pass we render our self

@@ -80,8 +80,10 @@ void CEffects::Blood(vec2 Pos, vec2 Dir)
 		b.m_Gravity = 1400.0f + frandom()*300;
 	}
 	
-	
-	b.m_Vel = Dir * ((frandom()+0.05f)*700.0f);
+	if (g_Config.m_GoreCustomWeapons == 1)
+		b.m_Vel = Dir * ((frandom()+0.10f)*1000.0f);
+	else
+		b.m_Vel = Dir * ((frandom()+0.10f)*700.0f);
 	
 
 	b.m_Rot = GetAngle(b.m_Vel);
@@ -257,7 +259,7 @@ void CEffects::PlayerSpawn(vec2 Pos)
 
 void CEffects::PlayerDeath(vec2 Pos, int ClientID)
 {
-	vec3 BloodColor(1.0f,1.0f,1.0f);
+	vec3 BloodColor(0.75f,0.75f,0.75f);
 
 	if(ClientID >= 0)
 	{

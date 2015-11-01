@@ -598,6 +598,7 @@ void CGameClient::OnShutdown() {}
 void CGameClient::OnEnterGame()
 {
 	CustomStuff()->Reset();
+	g_Config.m_GoreCustomWeapons = 0;
 }
 
 void CGameClient::OnGameOver()
@@ -637,10 +638,18 @@ void CGameClient::ProcessEvents()
 				g_GameClient.m_pEffects->DamageIndicator(vec2(ev->m_X, ev->m_Y), GetDirection(ev->m_Angle));
 			
 			// 0 - 200
-			int BloodAmount = g_Config.m_GoreBlood*2;
+			int BloodAmount = g_Config.m_GoreBlood*(2-g_Config.m_GoreCustomWeapons);
+			
+			
 			
 			for (int i = 0; i < BloodAmount; i++)
-				g_GameClient.m_pEffects->Blood(vec2(ev->m_X, ev->m_Y), RandomDir());
+			{
+				float Angle = ev->m_Angle;
+				if (g_Config.m_GoreCustomWeapons == 1)
+					g_GameClient.m_pEffects->Blood(vec2(ev->m_X, ev->m_Y), GetDirection(Angle+frandom()*55-frandom()*55)*-1);
+				else
+					g_GameClient.m_pEffects->Blood(vec2(ev->m_X, ev->m_Y), RandomDir());
+			}
 			
 			
 			if (g_Config.m_GoreTeeSplatter)

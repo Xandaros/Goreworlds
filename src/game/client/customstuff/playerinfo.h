@@ -62,8 +62,17 @@ public:
 	
 	int m_Weapon;
 	
+	bool m_UseHat;
+	int m_Hat; // hat sprite id
+	
+	float m_HatTargetAngle;
+	float m_HatAngle;
+	
 	// called from CCustomStuff
 	void Tick();
+	
+	void SetTerroristHat();
+	void SetCounterterroristHat();
 	
 	// called from CPlayers
 	void UpdatePhysics(vec2 PlayerVel, vec2 PrevVel);
@@ -87,6 +96,9 @@ public:
 	void AddTeeSplatter(float Angle);
 	
 	void RenderTeeSplatter(class IGraphics *Graphics, class CRenderTools *RenderTools);
+	
+	void SetLocal();
+	bool m_Local;
 	
 	bool m_InUse;
 };

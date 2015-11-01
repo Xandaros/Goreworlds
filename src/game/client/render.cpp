@@ -20,6 +20,8 @@
 static float gs_SpriteWScale;
 static float gs_SpriteHScale;
 
+#define RAD 0.017453292519943295769236907684886f
+
 
 /*
 static void layershot_begin()
@@ -170,13 +172,14 @@ void CRenderTools::DrawUIRect(const CUIRect *r, vec4 Color, int Corners, float R
 }
 
 void CRenderTools::RenderTee(CAnimState *pAnim, CTeeRenderInfo *pInfo, int Emote, vec2 Dir, vec2 Pos)
-{
+{	
 	vec2 Direction = Dir;
 	vec2 Position = Pos;
 
 	//Graphics()->TextureSet(data->images[IMAGE_CHAR_DEFAULT].id);
 	Graphics()->TextureSet(pInfo->m_Texture);
 
+	
 	// TODO: FIX ME
 	Graphics()->QuadsBegin();
 	//Graphics()->QuadsDraw(pos.x, pos.y-128, 128, 128);
@@ -266,10 +269,14 @@ void CRenderTools::RenderTee(CAnimState *pAnim, CTeeRenderInfo *pInfo, int Emote
 
 }
 
+vec3 CRenderTools::GetColorV3(int v)
+{
+	return HslToRgb(vec3(((v>>16)&0xff)/255.0f, ((v>>8)&0xff)/255.0f, 0.5f+(v&0xff)/255.0f*0.5f));
+}
 
 
 void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRenderInfo *pInfo, int Emote, vec2 Dir, vec2 Pos)
-{
+{	
 	vec2 Direction = Dir;
 	vec2 Position = Pos;
 
@@ -281,6 +288,23 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 		PlayerInfo->m_pTracer->SetColor(vec4(pInfo->m_ColorBody.r, pInfo->m_ColorBody.g, pInfo->m_ColorBody.b, 0.4f));
 		PlayerInfo->m_pTracer->Render(this);
 	}
+	
+	
+	if (g_Config.m_GoreCustomTeams)
+	{
+		if (pInfo->m_ColorBody.r == 217/255.0f && pInfo->m_ColorBody.g == 140/255.0f && pInfo->m_ColorBody.b == 65/255.0f)
+		{
+			PlayerInfo->SetTerroristHat();
+		}
+		else
+		{
+			if (pInfo->m_ColorBody.r == 100/255.0f && pInfo->m_ColorBody.g == 140/255.0f && pInfo->m_ColorBody.b == 100/255.0f)
+			{
+				PlayerInfo->SetCounterterroristHat();
+			}
+		}
+	}
+	
 	
 	//float HeadTilt = HeadTilt = Direction.y * (Direction.x < 0 ? -1 : 1) / 8.0f;
 	
@@ -380,6 +404,36 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 	}
 
 	Graphics()->QuadsEnd();
+	
+	
+	
+	
+	// render hat
+	if (PlayerInfo->m_UseHat)
+	{
+		Graphics()->TextureSet(g_pData->m_aImages[IMAGE_HATS].m_Id);
+		Graphics()->QuadsBegin();
+		
+		float a;
+		
+		if (Direction.x > 0)
+			a = GetAngle(Direction)/3.0f - 0.2f;
+		
+		if (Direction.x < 0)
+			a = GetAngle(Direction)/3.0f - 45*RAD;
+		
+		PlayerInfo->m_HatTargetAngle = a;
+		a = PlayerInfo->m_HatAngle;
+		
+		Graphics()->QuadsSetRotation(a);
+		SelectSprite(PlayerInfo->m_Hat, 0, 0, 0);
+
+			
+		IGraphics::CQuadItem QuadItem(Position.x + a * 15.0f, Position.y - 20 + abs(a*3.0f), 64*1.1f, 48*1.1f);
+		Graphics()->QuadsDraw(&QuadItem, 1);
+		
+		Graphics()->QuadsEnd();
+	}
 	
 	
 	
