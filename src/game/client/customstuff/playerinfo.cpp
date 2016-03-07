@@ -59,6 +59,8 @@ void CPlayerInfo::Reset()
 	m_Weapon2Recoil = vec2(0, 0);
 	m_Weapon2RecoilVel = vec2(0, 0);
 	
+	m_BodyTilt = 0;
+	
 	// reset tracer
 	if (!m_pTracer)
 		m_pTracer = new CTracer();
@@ -182,6 +184,8 @@ void CPlayerInfo::PhysicsTick(vec2 PlayerVel, vec2 PrevVel)
 		m_FeetOffset = vec2(0, 0);
 		return;
 	}
+	
+	m_BodyTilt = PlayerVel.x*0.0011f;
 	
 	//float b = 1.5f - g_Config.m_GoreTeeBounciness / 100.0f;
 	

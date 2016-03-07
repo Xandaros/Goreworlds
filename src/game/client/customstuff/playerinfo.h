@@ -68,6 +68,8 @@ public:
 	float m_HatTargetAngle;
 	float m_HatAngle;
 	
+	float m_BodyTilt;
+	
 	// called from CCustomStuff
 	void Tick();
 	
@@ -81,6 +83,8 @@ public:
 	void Update(vec2 Pos);
 	
 	vec2 Pos(){ return m_Pos; }
+	
+	bool m_FlipFeet;
 	
 	vec2 m_FeetOffset;
 	vec2 m_FeetOffsetVel;

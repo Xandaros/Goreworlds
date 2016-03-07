@@ -645,9 +645,9 @@ void CGameClient::ProcessEvents()
 			for (int i = 0; i < BloodAmount; i++)
 			{
 				float Angle = ev->m_Angle;
-				if (g_Config.m_GoreCustomWeapons == 1)
-					g_GameClient.m_pEffects->Blood(vec2(ev->m_X, ev->m_Y), GetDirection(Angle+frandom()*55-frandom()*55)*-1);
-				else
+				//if (g_Config.m_GoreCustomWeapons == 1)
+				//	g_GameClient.m_pEffects->Blood(vec2(ev->m_X, ev->m_Y), GetDirection(Angle+frandom()*55-frandom()*55)*-1);
+				//else
 					g_GameClient.m_pEffects->Blood(vec2(ev->m_X, ev->m_Y), RandomDir());
 			}
 			

@@ -287,15 +287,26 @@ void CPlayers::RenderPlayer(
 
 	
 	// flip feet animation when needed
-	if (Direction.x > 0.0f)
-		State.m_Reverse = false;
-	else
-		State.m_Reverse = true;
+	if (!InAir || ((Direction.x < 0 && Player.m_VelX < 0) || (Direction.x > 0 && Player.m_VelX > 0)))
+	{
+		if (Direction.x > 0.0f)
+		{
+			State.m_Reverse = false;
+			CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_FlipFeet = true;
+		}
+		else
+		{
+			State.m_Reverse = true;
+			CustomStuff()->m_aPlayerInfo[pInfo.m_ClientID].m_FlipFeet = false;
+		}
+	}
 	
 	
 	
 	if(InAir)
+	{
 		State.Add(&g_pData->m_aAnimations[ANIM_INAIR], 0, 1.0f); // TODO: some sort of time here
+	}
 	else if(Stationary)
 		State.Add(&g_pData->m_aAnimations[ANIM_IDLE], 0, 1.0f); // TODO: some sort of time here
 	else if(!WantOtherDir)

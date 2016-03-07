@@ -75,7 +75,7 @@ void CEffects::Blood(vec2 Pos, vec2 Dir)
 		b.m_Spr = SPRITE_BLOOD01 + (rand()%6);
 		b.m_LifeSpan = 3.0f + frandom()*3.0f;
 		b.m_Rotspeed = 0.0f;
-		b.m_StartSize = 32.0f + frandom()*32;
+		b.m_StartSize = 30.0f + frandom()*22;
 		b.m_EndSize = 16.0f;
 		b.m_Gravity = 1400.0f + frandom()*300;
 	}

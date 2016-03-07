@@ -82,7 +82,7 @@ void CBlood::Bounce(vec2 Pos, vec2 Dir)
 	b.m_Spr = SPRITE_BLOOD01;
 	b.m_LifeSpan = 2.0f + frandom()*2.0f;
 	b.m_Rotspeed = 0.0f;
-	b.m_StartSize = (32.0f + frandom()*32) / 1.75f;
+	b.m_StartSize = (30.0f + frandom()*24) / 1.75f;
 	b.m_EndSize = 16.0f / 1.75f;
 	b.m_Gravity = 1400.0f + frandom()*300;
 	

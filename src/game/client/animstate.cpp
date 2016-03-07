@@ -97,7 +97,7 @@ void CAnimState::Set(CAnimation *pAnim, float Time)
 void CAnimState::Add(CAnimation *pAnim, float Time, float Amount)
 {
 	CAnimState Add;
-	Add.m_Reverse = m_Reverse;
+	//Add.m_Reverse = m_Reverse;
 	if (m_Reverse)
 		Add.Set(pAnim, 1.0f-Time);
 	else

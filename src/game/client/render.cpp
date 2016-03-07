@@ -327,8 +327,8 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 			float BaseSize = pInfo->m_Size;
 			if(f == 1)
 			{
-				Graphics()->QuadsSetRotation(pAnim->GetBody()->m_Angle*pi*2);
-				//Graphics()->QuadsSetRotation((pAnim->GetBody()->m_Angle)*pi*2 + HeadTilt);
+				//Graphics()->QuadsSetRotation(pAnim->GetBody()->m_Angle*pi*2);
+				Graphics()->QuadsSetRotation((pAnim->GetBody()->m_Angle)*pi*2 + PlayerInfo->m_BodyTilt*RAD);
 				
 				// draw body
 				Graphics()->SetColor(pInfo->m_ColorBody.r, pInfo->m_ColorBody.g, pInfo->m_ColorBody.b, pInfo->m_ColorBody.a);
@@ -370,6 +370,14 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 					float h = Emote == EMOTE_BLINK ? BaseSize*0.15f : EyeScale;
 					float EyeSeparation = (0.075f - 0.010f*absolute(Direction.x))*BaseSize;
 					vec2 Offset = vec2(Direction.x*0.125f, -0.05f+Direction.y*0.10f)*BaseSize;
+					Graphics()->QuadsSetRotation((pAnim->GetBody()->m_Angle)*pi*2 + PlayerInfo->m_BodyTilt*RAD);
+		
+					if (PlayerInfo->m_FlipFeet && Offset.x < 0)
+						Offset.x = Offset.x * 0.5f;
+					
+					if (!PlayerInfo->m_FlipFeet && Offset.x > 0)
+						Offset.x = Offset.x * 0.5f;
+		
 					IGraphics::CQuadItem Array[2] = {
 						IGraphics::CQuadItem(BodyPos.x-EyeSeparation+Offset.x, BodyPos.y+Offset.y, EyeScale, h),
 						IGraphics::CQuadItem(BodyPos.x+EyeSeparation+Offset.x, BodyPos.y+Offset.y, -EyeScale, h)};
@@ -383,7 +391,10 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 			float w = BaseSize;
 			float h = BaseSize/2;
 
-			Graphics()->QuadsSetRotation(pFoot->m_Angle*pi*2);
+			if (PlayerInfo->m_FlipFeet)
+				Graphics()->QuadsSetRotation(-pFoot->m_Angle*pi*2);
+			else
+				Graphics()->QuadsSetRotation(pFoot->m_Angle*pi*2);
 
 			bool Indicate = !pInfo->m_GotAirJump && g_Config.m_ClAirjumpindicator;
 			float cs = 1.0f; // color scale
@@ -398,8 +409,19 @@ void CRenderTools::RenderTee(CPlayerInfo *PlayerInfo, CAnimState *pAnim, CTeeRen
 			}
 
 			Graphics()->SetColor(pInfo->m_ColorFeet.r*cs, pInfo->m_ColorFeet.g*cs, pInfo->m_ColorFeet.b*cs, pInfo->m_ColorFeet.a);
-			IGraphics::CQuadItem QuadItem(Position.x+pFoot->m_X*AnimScale+FeetOffset.x, Position.y+pFoot->m_Y*AnimScale+FeetOffset.y, w, h);
-			Graphics()->QuadsDraw(&QuadItem, 1);
+			
+			if (PlayerInfo->m_FlipFeet)
+			{
+				IGraphics::CQuadItem QuadItem(Position.x-pFoot->m_X*AnimScale+FeetOffset.x, Position.y+pFoot->m_Y*AnimScale+FeetOffset.y, w, h);
+				Graphics()->QuadsDraw(&QuadItem, 1);
+			}
+			else
+			{
+				IGraphics::CQuadItem QuadItem(Position.x+pFoot->m_X*AnimScale+FeetOffset.x, Position.y+pFoot->m_Y*AnimScale+FeetOffset.y, w, h);
+				Graphics()->QuadsDraw(&QuadItem, 1);
+			}
+			
+			//Graphics()->QuadsDraw(&QuadItem, 1);
 		}
 	}
 
